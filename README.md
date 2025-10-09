@@ -1,95 +1,106 @@
-<div align="center">
+# Portafolio Web — Miguel Aude
 
-<!-- Icono SVG inline -->
-<svg width="88" height="88" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="3" y="3" width="18" height="14" rx="2" ry="2" stroke="#2563EB" stroke-width="1.5" fill="#EFF6FF"/>
-  <path d="M7 7h6M7 10h10M7 13h8" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round"/>
-  <circle cx="8" cy="20" r="2" fill="#10B981"/>
-  <circle cx="16" cy="20" r="2" fill="#F59E0B"/>
-</svg>
+Un portafolio moderno construido con React + Vite + TypeScript. Presenta proyectos, enlaces a producción y repositorios, página de diplomas, sección de contacto y más.
 
-<h1>API de Cursos y Estudiantes</h1>
-<p>CRUD, búsqueda, paginación y relación Cursos ↔ Estudiantes</p>
+## 🚀 Demo en producción
+- Sitio: https://www.audedev.com/
 
-<!-- Badges -->
-<img src="https://img.shields.io/badge/node-18+-3c873a?logo=node.js&labelColor=222" />
-<img src="https://img.shields.io/badge/express-4.x-black?logo=express&labelColor=222" />
-<img src="https://img.shields.io/badge/mongoose-7.x-47A248?logo=mongodb&labelColor=222" />
+## 📦 Repositorio
+- Repo: https://github.com/mikeaude1/Portafolio-Web.git
 
-</div>
+## 🛠️ Stack tecnológico
+- React 18 + TypeScript
+- Vite (bundler y servidor de desarrollo)
+- CSS (App.css, index.css)
+- Node.js >= 18 recomendado
 
----
-
-## Índice
-- Introducción • Características • Arquitectura • Instalación • Endpoints • UI • Curl • Tecnologías • Buenas prácticas • Licencia
-
-## Introducción
-API para gestionar Cursos y Estudiantes. Incluye una UI amigable en `src/public/index.html` con formularios en modales para crear, editar y borrar.
-
-## Características
-- CRUD de Cursos y Estudiantes
-- Paginación, búsqueda y ordenamiento
-- Inscripción y retiro de estudiantes en cursos
-- UI ligera (HTML/CSS/JS) lista para probar
-
-## Arquitectura
+## 📁 Estructura del proyecto (resumen)
 ```
-c:\Proyectos\Apis
-├── .env
-├── package.json
-└── src\
-    ├── controllers\
-    ├── models\
-    ├── public\ (index.html)
-    ├── routes\
-    └── server.js
+MyPortFolio/
+├── public/            # Assets estáticos (sirven como /)
+│   ├── audedev-logo.svg
+│   ├── audedev-photo.svg
+│   ├── foto-cv.png
+│   └── diplomas/
+├── src/
+│   ├── assets/        # Imágenes y SVG usados dentro del código
+│   ├── components/    # Navbar, Footer, etc.
+│   ├── pages/         # About, Contact, Diplomas, Home, Projects
+│   ├── main.tsx       # Punto de entrada
+│   ├── App.tsx        # Router y layout
+│   └── index.css
+├── index.html         # HTML raíz
+├── package.json       # Scripts y dependencias
+├── vite.config.ts     # Configuración Vite
+└── README.md
 ```
 
-## Instalación y ejecución
-1) Instala dependencias:
+## ⚙️ Requisitos
+- Node.js >= 18
+- npm (o pnpm/yarn, ajusta los comandos si usas otro gestor)
+
+## 📥 Instalación
+1) Clonar el repositorio
+```
+git clone https://github.com/mikeaude1/Portafolio-Web.git
+cd Portafolio-Web
+```
+2) Instalar dependencias
 ```
 npm install
 ```
-2) (Opcional) `.env`:
-```
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/cursos
-```
-3) Ejecuta:
+
+## 🧪 Scripts disponibles
+- Desarrollo con HMR
 ```
 npm run dev
 ```
-Servidor: http://localhost:3000 • UI: http://localhost:3000/public/index.html
-
-## Endpoints principales
-Cursos: GET /api/courses, GET /api/courses/:id, POST /api/courses, PUT /api/courses/:id, DELETE /api/courses/:id, POST /api/courses/:id/enroll, POST /api/courses/:id/withdraw
-
-Estudiantes: GET /api/students, GET /api/students/:id, POST /api/students, PUT /api/students/:id, DELETE /api/students/:id
-
-## Probar en la UI
-Abre: http://localhost:3000/public/index.html
-- Listar, buscar y paginar
-- Agregar/Editar/Borrar en modales
-- Inscribir/retirar estudiantes
-
-## Ejemplos curl
-```bash
-# Crear curso
-curl -X POST http://localhost:3000/api/courses \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Node.js Avanzado","description":"Curso intensivo"}'
-
-# Crear estudiante
-curl -X POST http://localhost:3000/api/students \
-  -H "Content-Type: application/json" \
-  -d '{"firstName":"Jane","lastName":"Doe","email":"jane@doe.com"}'
+- Construcción de producción
+```
+npm run build
+```
+- Previsualización de la build
+```
+npm run preview
 ```
 
-## Tecnologías
-Express, Mongoose, Nodemon, HTML/CSS/JS (sin librerías externas)
+## 🧭 Navegación principal
+- Home: Presentación y avatar (usa `public/foto-cv.png`).
+- Projects: Tarjetas con enlaces a producción y repositorios.
+- Diplomas: Documentos y certificados.
+- About / Contact: Información personal y formas de contacto.
 
-## Buenas prácticas
-Valida entradas, maneja errores de forma consistente y nunca subas secretos al repositorio.
+## 🌟 Características destacadas
+- Diseño responsive y navegación sencilla.
+- Enlaces directos a producción y GitHub.
+- Build optimizada con Vite.
+- Assets estáticos servidos desde `public/`.
 
-## Licencia
-MIT
+## 🧑‍💻 Desarrollo local
+1) Inicia el servidor de desarrollo:
+```
+npm run dev
+```
+2) Abre el navegador:
+- http://localhost:5175/ (por defecto de Vite)
+
+## 📦 Producción
+Para generar la versión de producción:
+```
+npm run build
+```
+Luego puedes servir `dist/` en cualquier hosting estático (Netlify, Vercel, GitHub Pages, Nginx, etc.). Para una verificación local rápida:
+```
+npm run preview
+```
+- http://localhost:4173/
+
+## 🤝 Contribuciones
+¡Se agradecen ideas y PRs! Abre issues en el repositorio para discutir mejoras.
+
+## 📄 Licencia
+Este proyecto se publica con fines de portafolio. La licencia puede ser definida en futuras versiones.
+
+## ✨ Autor
+- Miguel Aude — https://www.audedev.com/
+- GitHub: https://github.com/mikeaude1
