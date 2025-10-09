@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pruebas API Cursos y Alumnos</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 2rem; background: #f7f7f8; color: #222; }
+    h1 { margin-top: 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
+    section { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    button { padding: .6rem 1rem; border-radius: 6px; border: 1px solid #d1d5db; background: #111827; color: white; cursor: pointer; }
+    button.secondary { background: #fff; color: #111; border-color: #9ca3af; }
+    input, select { width: 100%; padding: .5rem .6rem; border-radius: 6px; border: 1px solid #d1d5db; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #eee; padding: .5rem; text-align: left; }
+    .actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .muted { color: #6b7280; font-size: .9rem; }
+    .ok { color: #065f46; }
+    .error { color: #b91c1c; }
+    .badge { display:inline-block; padding: .2rem .5rem; border-radius: 6px; background:#eef2ff; color:#3730a3; }
+    /* Modales */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: none; align-items: center; justify-content: center; z-index: 50; }
+    .modal { background: #fff; border-radius: 12px; width: 520px; max-width: 95vw; box-shadow: 0 10px 30px rgba(0,0,0,.2); overflow: hidden; }
+    .modal header { display:flex; align-items:center; gap:.5rem; padding: 1rem; border-bottom:1px solid #eee; }
+    .modal header h3 { margin:0; }
+    .modal .content { padding: 1rem; }
+    .modal .actions { padding: 1rem; border-top:1px solid #eee; display:flex; justify-content:flex-end; gap:.5rem; }
+    .icon { width: 18px; height: 18px; display:inline-block; }
+    .icon.course { background: linear-gradient(135deg, #2563eb, #7c3aed); border-radius: 4px; }
+    .icon.student { background: linear-gradient(135deg, #16a34a, #0ea5e9); border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Pruebas API Cursos y Alumnos</h1>
+  <p class="muted">Base: <span class="badge" id="base">http://localhost:3000/api</span></p>
+
+  <div class="grid">
+    <section>
+      <h2>Seed (insertar 50 registros)</h2>
+      <p>Inserta cursos y estudiantes de prueba y los relaciona aleatoriamente.</p>
+      <div class="actions">
+        <button id="seed50">Sembrar 50 (reset)</button>
+        <button class="secondary" id="seedCustom">Sembrar personalizado</button>
+      </div>
+      <div id="seedResult" class="muted"></div>
+    </section>
+
+    <section>
+      <h2>Listar Cursos</h2>
+      <div class="actions">
+        <input id="courseSearch" placeholder="Buscar cursos... (nombre)" />
+        <select id="courseSort">
+          <option value="name">Nombre (A-Z)</option>
+          <option value="-name">Nombre (Z-A)</option>
+          <option value="createdAt">Creación (antiguos primero)</option>
+          <option value="-createdAt">Creación (recientes primero)</option>
+        </select>
+        <button id="loadCourses">Buscar</button>
+        <button class="secondary" id="addCourse">Agregar Curso</button>
+      </div>
+      <div style="overflow:auto; max-height: 360px;">
+        <table>
+          <thead><tr><th>Nombre</th><th>Estudiantes</th><th>Acciones</th></tr></thead>
+          <tbody id="coursesBody"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <button id="coursesPrev" class="secondary">Prev</button>
+        <span id="coursesPageInfo" class="muted"></span>
+        <button id="coursesNext" class="secondary">Next</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Listar Estudiantes</h2>
+      <div class="actions">
+        <input id="studentSearch" placeholder="Buscar estudiantes... (nombre/email)" />
+        <select id="studentSort">
+          <option value="lastName">Apellido (A-Z)</option>
+          <option value="-lastName">Apellido (Z-A)</option>
+          <option value="createdAt">Creación (antiguos primero)</option>
+          <option value="-createdAt">Creación (recientes primero)</option>
+        </select>
+        <button id="loadStudents">Buscar</button>
+        <button class="secondary" id="addStudent">Agregar Estudiante</button>
+      </div>
+      <div style="overflow:auto; max-height: 360px;">
+        <table>
+          <thead><tr><th>Nombre</th><th>Email</th><th>Cursos</th><th>Acciones</th></tr></thead>
+          <tbody id="studentsBody"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <button id="studentsPrev" class="secondary">Prev</button>
+        <span id="studentsPageInfo" class="muted"></span>
+        <button id="studentsNext" class="secondary">Next</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Inscribir / Retirar</h2>
+      <p class="muted">Primero carga listas de cursos y estudiantes.</p>
+      <label>Estudiante</label>
+      <select id="selStudent"></select>
+      <label>Curso</label>
+      <select id="selCourse"></select>
+      <div class="actions">
+        <button id="enroll">Inscribir</button>
+        <button class="secondary" id="withdraw">Retirar</button>
+      </div>
+      <div id="enrollMsg" class="muted"></div>
+    </section>
+  </div>
+
+  <!-- Modal reusable -->
+  <div id="modalBackdrop" class="modal-backdrop" style="display:none;">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header>
+        <span id="modalIcon" class="icon"></span>
+        <h3 id="modalTitle">Formulario</h3>
+      </header>
+      <div class="content">
+        <form id="modalForm">
+          <!-- Campos dinámicos -->
+        </form>
+        <div id="modalError" class="error"></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="secondary" id="modalCancel">Cancelar</button>
+        <button type="submit" id="modalSubmit">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const BASE = 'http://localhost:3000/api';
+    let coursesPage = 1; let studentsPage = 1; const PAGE_SIZE = 10;
+
+    async function seed(count = 50, reset = true) {
+      const res = await fetch(`${BASE}/seed?count=${count}&reset=${reset}`, { method: 'POST' });
+      const data = await res.json();
+      document.getElementById('seedResult').textContent = res.ok ? `OK: ${JSON.stringify(data)}` : `Error: ${data.error}`;
+    }
+    async function loadCourses() {
+      const search = encodeURIComponent(document.getElementById('courseSearch').value || '');
+      const sort = encodeURIComponent(document.getElementById('courseSort').value || 'name');
+      const res = await fetch(`${BASE}/courses?page=${coursesPage}&limit=${PAGE_SIZE}&search=${search}&sort=${sort}`);
+      const data = await res.json();
+      const tbody = document.getElementById('coursesBody');
+      tbody.innerHTML = '';
+      (data.items || data).forEach(c => {
+        const tr = document.createElement('tr');
+        const tdName = document.createElement('td'); tdName.textContent = c.name;
+        const tdCount = document.createElement('td'); tdCount.textContent = (c.students||[]).length;
+        const tdActions = document.createElement('td');
+        const btnEdit = document.createElement('button'); btnEdit.className = 'secondary'; btnEdit.textContent = 'Editar';
+        btnEdit.addEventListener('click', () => editCoursePrompt(c));
+        const btnDelete = document.createElement('button'); btnDelete.className = 'secondary'; btnDelete.textContent = 'Borrar';
+        btnDelete.addEventListener('click', () => deleteCourse(c._id));
+        tdActions.appendChild(btnEdit); tdActions.appendChild(btnDelete);
+        tr.appendChild(tdName); tr.appendChild(tdCount); tr.appendChild(tdActions);
+        tbody.appendChild(tr);
+      });
+      const sel = document.getElementById('selCourse');
+      sel.innerHTML = '';
+      (data.items || data).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c._id; opt.textContent = c.name; sel.appendChild(opt);
+      });
+      const page = data.page || coursesPage; const pages = data.pages || 1;
+      document.getElementById('coursesPageInfo').textContent = `Página ${page} de ${pages} (Total: ${data.total || (data.items || data).length})`;
+      document.getElementById('coursesPrev').disabled = page <= 1;
+      document.getElementById('coursesNext').disabled = page >= pages;
+    }
+    async function loadStudents() {
+      const search = encodeURIComponent(document.getElementById('studentSearch').value || '');
+      const sort = encodeURIComponent(document.getElementById('studentSort').value || 'lastName');
+      const res = await fetch(`${BASE}/students?page=${studentsPage}&limit=${PAGE_SIZE}&search=${search}&sort=${sort}`);
+      const data = await res.json();
+      const tbody = document.getElementById('studentsBody');
+      tbody.innerHTML = '';
+      (data.items || data).forEach(s => {
+        const tr = document.createElement('tr');
+        const courses = (s.courses||[]).map(c => c.name || c).join(', ');
+        const tdName = document.createElement('td'); tdName.textContent = `${s.firstName} ${s.lastName}`;
+        const tdEmail = document.createElement('td'); tdEmail.textContent = s.email;
+        const tdCourses = document.createElement('td'); tdCourses.textContent = courses;
+        const tdActions = document.createElement('td');
+        const btnEdit = document.createElement('button'); btnEdit.className = 'secondary'; btnEdit.textContent = 'Editar';
+        btnEdit.addEventListener('click', () => editStudentPrompt(s));
+        const btnDelete = document.createElement('button'); btnDelete.className = 'secondary'; btnDelete.textContent = 'Borrar';
+        btnDelete.addEventListener('click', () => deleteStudent(s._id));
+        tdActions.appendChild(btnEdit); tdActions.appendChild(btnDelete);
+        tr.appendChild(tdName); tr.appendChild(tdEmail); tr.appendChild(tdCourses); tr.appendChild(tdActions);
+        tbody.appendChild(tr);
+      });
+      const sel = document.getElementById('selStudent');
+      sel.innerHTML = '';
+      (data.items || data).forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s._id; opt.textContent = `${s.firstName} ${s.lastName}`; sel.appendChild(opt);
+      });
+      const page = data.page || studentsPage; const pages = data.pages || 1;
+      document.getElementById('studentsPageInfo').textContent = `Página ${page} de ${pages} (Total: ${data.total || (data.items || data).length})`;
+      document.getElementById('studentsPrev').disabled = page <= 1;
+      document.getElementById('studentsNext').disabled = page >= pages;
+    }
+    async function enroll(studentId, courseId) {
+      const res = await fetch(`${BASE}/courses/${courseId}/enroll/${studentId}`, { method: 'POST' });
+      const data = await res.json();
+      document.getElementById('enrollMsg').textContent = res.ok ? 'Inscripción OK' : `Error: ${data.error}`;
+      await loadCourses(); await loadStudents();
+    }
+    async function withdraw(studentId, courseId) {
+      const res = await fetch(`${BASE}/courses/${courseId}/withdraw/${studentId}`, { method: 'POST' });
+      const data = await res.json();
+      document.getElementById('enrollMsg').textContent = res.ok ? 'Retiro OK' : `Error: ${data.error}`;
+      await loadCourses(); await loadStudents();
+    }
+
+    // Utilidades modal
+    const backdrop = document.getElementById('modalBackdrop');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalForm = document.getElementById('modalForm');
+    const modalError = document.getElementById('modalError');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalCancel = document.getElementById('modalCancel');
+    const modalSubmit = document.getElementById('modalSubmit');
+    function openModal(type, title, fields, onSubmit) {
+      modalError.textContent = '';
+      modalTitle.textContent = title;
+      modalIcon.className = `icon ${type}`;
+      modalForm.innerHTML = fields.map(f => `
+        <label>${f.label}</label>
+        <input id="${f.id}" type="${f.type||'text'}" placeholder="${f.placeholder||''}" value="${f.value||''}" ${f.required? 'required': ''} />
+      `).join('');
+      backdrop.style.display = 'flex';
+      const handler = async (e) => {
+        e.preventDefault();
+        try {
+          const payload = {};
+          for (const f of fields) {
+            const v = (document.getElementById(f.id).value || '').trim();
+            if (f.required && !v) throw new Error(`Campo requerido: ${f.label}`);
+            payload[f.id] = v;
+          }
+          await onSubmit(payload);
+          closeModal();
+        } catch(err) { modalError.textContent = err.message || String(err); }
+      };
+      modalForm.onsubmit = handler;
+      modalSubmit.onclick = handler;
+      modalCancel.onclick = closeModal;
+      function closeModal(){ backdrop.style.display = 'none'; modalForm.onsubmit = null; modalSubmit.onclick = null; modalCancel.onclick = null; }
+      return { closeModal };
+    }
+
+    // CRUD Cursos con modal
+    async function createCoursePrompt() {
+      openModal('course', 'Agregar Curso', [
+        { id: 'name', label: 'Nombre del curso', required: true, placeholder: 'Ej: Node.js Avanzado' },
+        { id: 'description', label: 'Descripción (opcional)', placeholder: 'Breve descripción' }
+      ], async (p) => {
+        const res = await fetch(`${BASE}/courses`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p) });
+        const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Error al crear curso');
+        await loadCourses();
+      });
+    }
+    async function editCoursePrompt(course) {
+      openModal('course', 'Editar Curso', [
+        { id: 'name', label: 'Nombre del curso', required: true, value: course.name },
+        { id: 'description', label: 'Descripción (opcional)', value: course.description || '' }
+      ], async (p) => {
+        const res = await fetch(`${BASE}/courses/${course._id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p) });
+        const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Error al actualizar curso');
+        await loadCourses(); await loadStudents();
+      });
+    }
+    async function deleteCourse(id) {
+      openModal('course', 'Confirmar borrado', [
+        { id: 'confirm', label: 'Escribe BORRAR para confirmar', required: true, placeholder: 'BORRAR' }
+      ], async (p) => {
+        if (p.confirm !== 'BORRAR') throw new Error('Debes escribir BORRAR');
+        const res = await fetch(`${BASE}/courses/${id}`, { method: 'DELETE' });
+        const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Error al borrar curso');
+        await loadCourses(); await loadStudents();
+      });
+    }
+
+    // CRUD Estudiantes con modal
+    async function createStudentPrompt() {
+      openModal('student', 'Agregar Estudiante', [
+        { id: 'firstName', label: 'Nombre', required: true },
+        { id: 'lastName', label: 'Apellido', required: true },
+        { id: 'email', label: 'Email', type: 'email', required: true }
+      ], async (p) => {
+        const res = await fetch(`${BASE}/students`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p) });
+        const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Error al crear estudiante');
+        await loadStudents();
+      });
+    }
+    async function editStudentPrompt(student) {
+      openModal('student', 'Editar Estudiante', [
+        { id: 'firstName', label: 'Nombre', required: true, value: student.firstName },
+        { id: 'lastName', label: 'Apellido', required: true, value: student.lastName },
+        { id: 'email', label: 'Email', type: 'email', required: true, value: student.email }
+      ], async (p) => {
+        const res = await fetch(`${BASE}/students/${student._id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p) });
+        const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Error al actualizar estudiante');
+        await loadStudents(); await loadCourses();
+      });
+    }
+    async function deleteStudent(id) {
+      openModal('student', 'Confirmar borrado', [
+        { id: 'confirm', label: 'Escribe BORRAR para confirmar', required: true, placeholder: 'BORRAR' }
+      ], async (p) => {
+        if (p.confirm !== 'BORRAR') throw new Error('Debes escribir BORRAR');
+        const res = await fetch(`${BASE}/students/${id}`, { method: 'DELETE' });
+        const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Error al borrar estudiante');
+        await loadStudents(); await loadCourses();
+      });
+    }
+
+    document.getElementById('seed50').addEventListener('click', () => seed(50, true));
+    document.getElementById('seedCustom').addEventListener('click', async () => {
+      const n = parseInt(prompt('¿Cuántos registros en total? (ej. 50)', '50'), 10);
+      if (!Number.isFinite(n) || n < 1) return alert('Número inválido');
+      const reset = confirm('¿Borrar datos existentes antes de sembrar?');
+      await seed(n, reset);
+    });
+    document.getElementById('loadCourses').addEventListener('click', () => { coursesPage = 1; loadCourses(); });
+    document.getElementById('coursesPrev').addEventListener('click', () => { coursesPage = Math.max(1, coursesPage - 1); loadCourses(); });
+    document.getElementById('coursesNext').addEventListener('click', () => { coursesPage = coursesPage + 1; loadCourses(); });
+    document.getElementById('addCourse').addEventListener('click', () => createCoursePrompt());
+
+    document.getElementById('loadStudents').addEventListener('click', () => { studentsPage = 1; loadStudents(); });
+    document.getElementById('studentsPrev').addEventListener('click', () => { studentsPage = Math.max(1, studentsPage - 1); loadStudents(); });
+    document.getElementById('studentsNext').addEventListener('click', () => { studentsPage = studentsPage + 1; loadStudents(); });
+    document.getElementById('addStudent').addEventListener('click', () => createStudentPrompt());
+
+    document.getElementById('enroll').addEventListener('click', () => {
+      const s = document.getElementById('selStudent').value;
+      const c = document.getElementById('selCourse').value;
+      if (!s || !c) return alert('Selecciona estudiante y curso');
+      enroll(s, c);
+    });
+    document.getElementById('withdraw').addEventListener('click', () => {
+      const s = document.getElementById('selStudent').value;
+      const c = document.getElementById('selCourse').value;
+      if (!s || !c) return alert('Selecciona estudiante y curso');
+      withdraw(s, c);
+    });
+    // ... existing code ...
+  </script>
+
+  <!-- Apartado: Cómo consumir esta API -->
+  <section id="api-docs" style="margin-top: 32px; padding: 16px; border: 1px solid #ddd; border-radius: 8px;">
+    <h2>Cómo consumir esta API</h2>
+    <p>Base URL: <strong>http://localhost:3000</strong></p>
+
+    <h3>Recursos y endpoints</h3>
+    <ul>
+      <li>
+        <strong>Cursos</strong>
+        <ul>
+          <li>Listado: <a href="/api/courses?page=1&limit=10&sort=name&order=asc" target="_blank">GET /api/courses</a> (admite <em>page</em>, <em>limit</em>, <em>search</em>, <em>sort</em>=name y <em>order</em>=asc|desc)</li>
+          <li>Detalle: GET /api/courses/:id</li>
+          <li>Crear: POST /api/courses</li>
+          <li>Actualizar: PUT /api/courses/:id</li>
+          <li>Eliminar: DELETE /api/courses/:id</li>
+          <li>Inscribir estudiante: POST /api/courses/:id/enroll</li>
+          <li>Retirar estudiante: POST /api/courses/:id/withdraw</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Estudiantes</strong>
+        <ul>
+          <li>Listado: <a href="/api/students?page=1&limit=10&sort=lastName&order=asc" target="_blank">GET /api/students</a> (admite <em>page</em>, <em>limit</em>, <em>search</em>, <em>sort</em>=firstName|lastName|email y <em>order</em>=asc|desc)</li>
+          <li>Detalle: GET /api/students/:id</li>
+          <li>Crear: POST /api/students</li>
+          <li>Actualizar: PUT /api/students/:id</li>
+          <li>Eliminar: DELETE /api/students/:id</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Ejemplos con curl</h3>
+    <p>Listado con paginación y búsqueda:</p>
+    <pre>
+# Cursos: página 1, 10 por página, búsqueda por nombre que contenga "js"
+curl "http://localhost:3000/api/courses?page=1&limit=10&search=js&sort=name&order=asc"
+
+# Estudiantes: página 2, 5 por página, búsqueda por apellido "doe"
+curl "http://localhost:3000/api/students?page=2&limit=5&search=doe&sort=lastName&order=desc"
+    </pre>
+
+    <p>Crear recursos:</p>
+    <pre>
+# Crear curso
+curl -X POST "http://localhost:3000/api/courses" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Node.js Avanzado"}'
+
+# Crear estudiante
+curl -X POST "http://localhost:3000/api/students" \
+  -H "Content-Type: application/json" \
+  -d '{"firstName":"Juan","lastName":"Pérez","email":"juan.perez@example.com"}'
+    </pre>
+
+    <p>Actualizar y eliminar:</p>
+    <pre>
+# Actualizar curso (reemplaza :id por el id real)
+curl -X PUT "http://localhost:3000/api/courses/:id" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Node.js Intermedio"}'
+
+# Eliminar curso
+curl -X DELETE "http://localhost:3000/api/courses/:id"
+
+# Actualizar estudiante
+curl -X PUT "http://localhost:3000/api/students/:id" \
+  -H "Content-Type: application/json" \
+  -d '{"firstName":"Ana","lastName":"García","email":"ana.garcia@example.com"}'
+
+# Eliminar estudiante
+curl -X DELETE "http://localhost:3000/api/students/:id"
+    </pre>
+
+    <p>Inscribir y retirar estudiantes de un curso:</p>
+    <pre>
+# Inscribir
+curl -X POST "http://localhost:3000/api/courses/:id/enroll" \
+  -H "Content-Type: application/json" \
+  -d '{"studentId":"<ID_DEL_ESTUDIANTE>"}'
+
+# Retirar
+curl -X POST "http://localhost:3000/api/courses/:id/withdraw" \
+  -H "Content-Type: application/json" \
+  -d '{"studentId":"<ID_DEL_ESTUDIANTE>"}'
+    </pre>
+
+    <h3>Notas</h3>
+    <ul>
+      <li>Los endpoints de listado devuelven un objeto con: <code>items</code>, <code>total</code>, <code>page</code>, <code>limit</code> y <code>pages</code>.</li>
+      <li>El parámetro <code>search</code> busca por nombre en cursos y por nombre/apellido/email en estudiantes.</li>
+      <li>El orden por defecto es ascendente; cambia con <code>order=desc</code>.</li>
+      <li>Usa los enlaces de arriba para probar rápidamente los endpoints GET desde el navegador.</li>
+    </ul>
+  </section>
+
+</body>
+</html>
