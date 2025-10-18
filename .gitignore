@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Ignorar artefactos pesados que no deben versionarse
+/dist.zip
+/public/proyectos/DIST/
+/public/proyectos/*.exe
