@@ -1,2 +1,4 @@
 dist_prev/*.zip filter=lfs diff=lfs merge=lfs -text
 *.exe filter=lfs diff=lfs merge=lfs -text
+*.yml text eol=lf
+.cpanel.yml text eol=lf
