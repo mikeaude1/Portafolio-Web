@@ -3,14 +3,12 @@
   RewriteEngine On
   RewriteBase /
 
-  # Serve existing files/directories normally
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
+  # Serve existing files normally (no bloquear por directorios)
+  RewriteCond %{REQUEST_FILENAME} -f
   RewriteRule ^ - [L]
 
-  # Fallback all other routes to index.html
+  # Fallback all other routes to index.html (ignorar directorios)
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
 </IfModule>
 
