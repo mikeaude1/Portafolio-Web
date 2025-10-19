@@ -29,6 +29,10 @@ export default function Projects() {
     },
   ] as const;
 
+  // Resolver rutas con base y proveer fallback de imagen en caso de error
+  const toSrc = (path: string) => import.meta.env.BASE_URL + (path?.startsWith('/') ? path.slice(1) : path);
+  const fallbackImage = '/audedev-logo.svg';
+
   return (
     <section className="page projects">
       <h2>Proyectos</h2>
@@ -39,7 +43,13 @@ export default function Projects() {
           <article className="project-card" key={p.name}>
             <div className="project-thumb">
               {p.image ? (
-                <img src={p.image} alt={p.name} />
+                <img
+                  src={toSrc(p.image)}
+                  alt={p.name}
+                  loading="lazy"
+                  decoding="async"
+                  onError={(e) => { e.currentTarget.src = toSrc(fallbackImage); }}
+                />
               ) : (
                 <div className="thumb-fallback">{p.name.charAt(0)}</div>
               )}

@@ -53,7 +53,7 @@ html, body{
  .accent-cyan { color: #2DD4BF; font-weight: 600; }
 .page.center { display: grid; place-items: center; text-align: center; }
 /* -- Navbar */
-.navbar { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding: 1rem 1.5rem; border-bottom: 1px solid rgba(100, 108, 255, 0.2); background: rgba(45,212,191,0.08); background: color-mix(in srgb, currentColor 8%, transparent); position: sticky; top:0; backdrop-filter: blur(6px); }
+.navbar { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding: 1rem 1.5rem; border-bottom: 1px solid rgba(100, 108, 255, 0.2); background: rgba(45,212,191,0.08); position: sticky; top:0; backdrop-filter: blur(8px); }
 /* -- Brand */
 .navbar .brand { font-weight: 700; letter-spacing: 0.2px; }
 /* -- Links */
@@ -61,18 +61,18 @@ html, body{
 /* -- Enlaces Navbar */
 .navbar a { color: #2DD4BF; opacity: 0.95; display:inline-flex; align-items:center; gap:0.25rem; transition: transform 160ms ease, background 160ms ease, color 160ms ease; border-radius: 6px; padding: 0.25rem 0.5rem; }
 .navbar a .label { margin-top: 3px; display:inline-block; }
-.navbar a:hover { transform: scale(1.07) translateY(-2px); color: #2DD4BF; background: rgba(45,212,191,0.16); background: color-mix(in srgb, currentColor 16%, transparent); }
+.navbar a:hover { transform: scale(1.07) translateY(-2px); color: #2DD4BF; background: rgba(45,212,191,0.16); }
 .navbar a:active { transform: scale(1.03) translateY(-1px); }
 .navbar a.active { color: #646cff; font-weight: 600; }
 /* -- Acciones y botones */
 .actions { display:flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
-.btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.6rem 1rem; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background: rgba(45,212,191,0.10); background: color-mix(in srgb, currentColor 10%, transparent); color: #2DD4BF; text-decoration: none; transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease; position: relative; }
+.btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.6rem 1rem; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background: rgba(45,212,191,0.10); color: #2DD4BF; text-decoration: none; transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease; position: relative; }
  /* -- Botón: etiqueta */
  .btn .label { margin-top: 4px; display:inline-block; }
  /* -- Botón: variante primaria */
  .btn.primary { background: var(--primary); color: white; border-color: var(--primary); }
  /* -- Botón: hover y active */
-  .btn:hover { border-color: var(--primary); transform: scale(1.07) translateY(-2px); box-shadow: 0 8px 20px rgba(100,108,255,0.28); color: #2DD4BF; background: rgba(45,212,191,0.16); background: color-mix(in srgb, currentColor 16%, transparent); }
+  .btn:hover { border-color: var(--primary); transform: scale(1.07) translateY(-2px); box-shadow: 0 8px 20px rgba(100,108,255,0.28); color: #2DD4BF; background: rgba(45,212,191,0.16); }
   .btn:active { transform: scale(1.03) translateY(-1px); box-shadow: 0 4px 12px rgba(100,108,255,0.25); }
 /* -- Encabezado Hero */
 .hero-header { display:flex; align-items:center; gap:1rem; margin-bottom: 0.75rem; }
@@ -95,8 +95,8 @@ html, body{
 .footer { margin-top:50px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem; padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.12); text-align:center; opacity: 0.9; background: linear-gradient(180deg, rgba(15,36,72,0.55), rgba(11,26,51,0.35)); }
 .footer .brand { display:flex; align-items:center; gap:0.5rem; }
 .footer .links { display:flex; align-items:center; gap:0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
-.footer .links .btn { background: rgba(45,212,191,0.10); background: color-mix(in srgb, currentColor 10%, transparent); color: #2DD4BF; }
-  .footer .links .btn:hover { background: rgba(45,212,191,0.16); background: color-mix(in srgb, currentColor 16%, transparent); color: #2DD4BF; }
+.footer .links .btn { background: rgba(45,212,191,0.10); color: #2DD4BF; }
+  .footer .links .btn:hover { background: rgba(45,212,191,0.16); color: #2DD4BF; }
 .footer small { color: var(--text-muted); }
 
 /* ===== Shared: Decoración hover subrayado enlaces y botones ===== */
@@ -109,7 +109,7 @@ html, body{
 .about p { margin: 0.5rem 0; }
 .tech-section { margin-top: 1.25rem; }
 .tech-grid { display:flex; flex-wrap: wrap; gap: 0.75rem; }
-.tech { display:inline-flex; align-items:center; gap:0.5rem; padding:0.55rem 0.9rem; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background: rgba(31,111,255,0.10); color: inherit; text-decoration: none; transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease; }
+.tech { display:inline-flex; align-items:center; gap:0.5rem; padding:0.55rem 0.9rem; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background: rgba(31,111,255,0.10); color: inherit; text-decoration: none; transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease; position: relative; }
    .tech .label { margin-top: 3px; display:inline-block; }
    .tech .icon { width: 22px; height: 22px; }
    .tech:hover { transform: scale(1.07) translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.12); background: rgba(31,111,255,0.16); }
@@ -168,17 +168,16 @@ html, body{
 
 /* ===== Diplomas Gallery ===== */
 .diplomas { margin-top: 1rem; }
-.diploma-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; align-items: stretch; }
-.diploma-card { display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(45,212,191,0.06); overflow: hidden; transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease; text-decoration: none; color: inherit; }
-.diploma-card:hover { transform: scale(1.03) translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.12); border-color: rgba(45,212,191,0.35); background: rgba(45,212,191,0.12); }
-.diploma-thumb { display: grid; place-items: center; height: 160px; background: linear-gradient(180deg, rgba(15,36,72,0.55), rgba(11,26,51,0.35)); }
- .diploma-thumb img { width: 100%; height: 100%; object-fit: cover; }
- .diploma-thumb .pdf-icon { width: 64px; height: 64px; opacity: 0.9; }
- .diploma-info { padding: 0.75rem 0.9rem; display:flex; flex-direction:column; gap: 0.35rem; }
- .diploma-title { margin: 0; font-size: 1rem; line-height: 1.25rem; }
- .diploma-meta { font-size: 0.8rem; color: #9aa4b2; }
- .diploma-actions { display:flex; gap:0.5rem; padding: 0 0.9rem 0.9rem; margin-top: auto; }
- .diploma-actions .btn { padding: 0.4rem 0.75rem; border-radius: 8px; border:1px solid rgba(255,255,255,0.15); background: rgba(45,212,191,0.10); color: #2DD4BF; }
+.diploma-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+.diploma-card { display:grid; grid-template-rows: auto 1fr auto; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(11,26,51,0.35); overflow:hidden; transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease; }
+.diploma-card:hover { transform: scale(1.03) translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.12); border-color: rgba(45,212,191,0.35); background: rgba(15,36,72,0.55); }
+.diploma-thumb { height: 220px; display:grid; place-items:center; background: linear-gradient(180deg, rgba(15,36,72,0.55), rgba(11,26,51,0.35)); }
+.diploma-thumb img { max-width:100%; max-height:100%; object-fit:contain; }
+.diploma-info { padding: 0.75rem 0.9rem; }
+.diploma-title { margin: 0 0 0.25rem; font-size: 1.05rem; line-height: 1.35rem; }
+.diploma-meta { color: #9aa4b2; }
+.diploma-actions { display:flex; gap:0.5rem; padding: 0 0.9rem 0.9rem; }
+ .diploma-actions .btn { background: rgba(45,212,191,0.10); border-color: rgba(45,212,191,0.25); color: #2DD4BF; }
  .diploma-actions .btn:hover { background: rgba(45,212,191,0.16); border-color: rgba(45,212,191,0.35); color: #2DD4BF; }
  
  /* PDF preview */
