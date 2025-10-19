@@ -1,6 +1,14 @@
 # SPA fallback for Vite React app on Apache (Hostinger)
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Forzar HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  
+  # Canonical: redirigir www a dominio raíz
+  RewriteCond %{HTTP_HOST} ^www\.audedev\.com$ [NC]
+  RewriteRule ^ https://audedev.com%{REQUEST_URI} [L,R=301]
+  
   RewriteBase /
 
   # Serve existing files normally (no bloquear por directorios)
@@ -30,3 +38,6 @@ Options -MultiViews
 
 # Security: prevent directory listing
 Options -Indexes
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
