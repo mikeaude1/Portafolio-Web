@@ -3,7 +3,7 @@ export default function Projects() {
     {
       name: 'Portfolio Web',
       description: 'Sitio personal con React + Vite y diseño moderno.',
-      image: '/projects/portfolio-cover.jpg',
+      image: '/projects/portfolio-cover.png',
       repo: 'https://github.com/mikeaude1/Portafolio-Web.git',
       demo: 'https://www.audedev.com/',
       tags: ['React', 'Vite', 'CSS'],
