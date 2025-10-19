@@ -1,0 +1,58 @@
+name: Deploy to Hostinger (public_html)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hostinger-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Build
+        env:
+          VITE_BASE: '/'
+        run: npm run web:build
+
+      - name: Ensure SPA fallback (optional)
+        run: cp dist/index.html dist/404.html || true
+
+      - name: Deploy to Hostinger via FTP (FTPS)
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          local-dir: ./dist
+          server-dir: /public_html
+          protocol: ftps
+          port: 21
+          timeout: 600000
+          exclude: |
+            **/.git*
+            **/node_modules/**
+            **/src/**
