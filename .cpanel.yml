@@ -1,18 +1,8 @@
 ---
 deployment:
   tasks:
-    # Ruta de despliegue en Hostinger/cPanel
     - export DEPLOYPATH=/home3/audedevc/public_html/
-
-    # Asegurar instalación y build (requiere Node y npm en el servidor)
-    - if [ -f package-lock.json ]; then npm ci; else npm install; fi
-    - export VITE_BASE='/'
-    - npm run web:build
-
-    # Limpiar destino y copiar build de producción (incluye .htaccess)
-    - rm -rf "$DEPLOYPATH"/*
     - mkdir -p "$DEPLOYPATH"
-    - cp -a dist/. "$DEPLOYPATH"
-
-    # Log final
+    - rm -rf "$DEPLOYPATH"/*
+    - cp -a dist/. "$DEPLOYPATH"/
     - echo "Deploy completado en $DEPLOYPATH a las $(date)"
