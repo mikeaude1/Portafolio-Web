@@ -14,6 +14,11 @@
   RewriteRule . /index.html [L]
 </IfModule>
 
+# Fallback cuando mod_rewrite no está disponible
+ErrorDocument 404 /index.html
+Options -MultiViews
+# end fallback
+
 # Optional: basic cache headers for static assets
 <IfModule mod_expires.c>
   ExpiresActive On
