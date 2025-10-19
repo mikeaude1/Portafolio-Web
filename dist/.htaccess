@@ -39,7 +39,6 @@ Options -MultiViews
 # Security: prevent directory listing
 Options -Indexes
 <IfModule mod_headers.c>
-  Header always set Content-Security-Policy "upgrade-insecure-requests; block-all-mixed-content"
-</IfModule>
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set Content-Security-Policy "upgrade-insecure-requests; block-all-mixed-content"
 </IfModule>
