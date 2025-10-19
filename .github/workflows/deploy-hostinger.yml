@@ -3,6 +3,8 @@ name: Deploy to Hostinger (public_html)
 on:
   push:
     branches: [ main ]
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 permissions:
@@ -52,6 +54,8 @@ jobs:
           protocol: ftps
           port: 21
           timeout: 600000
+          log-level: verbose
+          dangerous-clean-slate: true
           exclude: |
             **/.git*
             **/.git*/**
