@@ -40,6 +40,11 @@ jobs:
           VITE_BASE: '/'
         run: npm run web:build
 
+      - name: Add CNAME and SPA fallback
+        run: |
+          cp CNAME dist/CNAME || echo "audedev.com" > dist/CNAME
+          cp dist/index.html dist/404.html
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
