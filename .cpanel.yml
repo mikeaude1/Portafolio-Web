@@ -1,8 +1,13 @@
 ---
 deployment:
   tasks:
+    # Ruta de despliegue en Hostinger/cPanel
     - export DEPLOYPATH=/home3/audedevc/public_html/
+
+    # Despliegue simple: copiar artefactos ya construidos (sin build en servidor)
     - mkdir -p "$DEPLOYPATH"
     - rm -rf "$DEPLOYPATH"/*
     - cp -a dist/. "$DEPLOYPATH"/
+
+    # Log final
     - echo "Deploy completado en $DEPLOYPATH a las $(date)"
