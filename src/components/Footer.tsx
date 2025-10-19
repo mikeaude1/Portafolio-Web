@@ -21,7 +21,7 @@ export default function Footer() {
         </a>
       </div>
       <small>Copyright © {year} Miguel Aude (AudeDev). Todos los derechos reservados.</small>
-      <small>Este portafolio es informativo y muestra proyectos y experiencias de Miguel Aude (AudeDev). No constituye asesoría profesional (legal, financiera o técnica) ni garantía de resultados; el contacto por WhatsApp/Email no crea una relación contractual hasta acordarlo por escrito. Los enlaces externos se ofrecen por conveniencia y su contenido es responsabilidad de sus titulares.</small>
+      <small>Este portafolio es informativo y muestra proyectos y experiencias de Miguel Aude (AudeDev). El contacto por WhatsApp/Email no crea una relación contractual hasta acordarlo por escrito. Los enlaces externos se ofrecen por conveniencia y su contenido es responsabilidad de sus titulares.</small>
     </footer>
   )
 }

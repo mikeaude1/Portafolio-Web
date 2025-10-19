@@ -3,7 +3,7 @@ export default function Projects() {
     {
       name: 'Portfolio Web',
       description: 'Sitio personal con React + Vite y diseño moderno.',
-      image: '/projects/portfolio-cover.png',
+      image: '/images/projects/portafolio.jpg',
       repo: 'https://github.com/mikeaude1/Portafolio-Web.git',
       demo: 'https://www.audedev.com/',
       tags: ['React', 'Vite', 'CSS'],
@@ -12,7 +12,7 @@ export default function Projects() {
     {
       name: 'API de Cursos',
       description: 'API REST para gestionar cursos y alumnos.',
-      image: '/projects/api-cursos.png',
+      image: '/images/projects/api.jpg',
       repo: 'https://github.com/mikeaude1/API-REST-COURSES-ALUMNS.git',
       demo: '',
       tags: ['Node.js', 'Express', 'MongoDB'],
@@ -21,17 +21,13 @@ export default function Projects() {
     {
       name: 'Molinar-slayer',
       description: 'Proyecto Django para despacho legal. Solo ambiente local (sin acceso a producción).',
-      image: '',
+      image: '/images/projects/molinarslayer.jpg',
       repo: 'https://github.com/mikeaude1/Molinar-slayer',
       demo: '',
       tags: ['javascript', 'css', 'python', 'django', 'html5'],
       status: 'local',
     },
   ] as const;
-
-  // Resolver rutas con base y proveer fallback de imagen en caso de error
-  const toSrc = (path: string) => import.meta.env.BASE_URL + (path?.startsWith('/') ? path.slice(1) : path);
-  const fallbackImage = '/audedev-logo.svg';
 
   return (
     <section className="page projects">
@@ -43,15 +39,9 @@ export default function Projects() {
           <article className="project-card" key={p.name}>
             <div className="project-thumb">
               {p.image ? (
-                <img
-                  src={toSrc(p.image)}
-                  alt={p.name}
-                  loading="lazy"
-                  decoding="async"
-                  onError={(e) => { e.currentTarget.src = toSrc(fallbackImage); }}
-                />
+                <img src={p.image} alt={p.name} />
               ) : (
-                <div className="thumb-fallback">{p.name.charAt(0)}</div>
+                <div className="thumb-fallback">{(p as typeof projects[number]).name.charAt(0)}</div>
               )}
             </div>
             <div className="project-info">

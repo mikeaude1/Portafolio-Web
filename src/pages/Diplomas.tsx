@@ -9,7 +9,7 @@ export default function Diplomas() {
     { file: 'tituloycedula (09-20-2022).pdf',Name:'Título y Cedula Profecional' },
   ] as const;
 
-  const basePath = '/diplomas/';
+  const basePath = '/images/diplomas/';
   const isPdf = (name: string) => /\.pdf$/i.test(name);
   const prettyName = (name: string) => {
     const noExt = name.replace(/\.[^/.]+$/, '');
@@ -33,9 +33,9 @@ export default function Diplomas() {
                   <object data={url} type="application/pdf" className="pdf-preview" aria-label={`Vista previa PDF ${title}`}>
                     <div className="pdf-fallback">
                       <svg className="pdf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label={`PDF ${title}`}>
-                        <rect x="4" y="3" width="14" height="18" rx="2" ry="2" stroke="#FF4D4D" strokeWidth="1.5" fill="rgba(255,77,77,0.15)" />
-                        <path d="M14 3v5a2 2 0 0 0 2 2h4" stroke="#FF4D4D" strokeWidth="1.5" fill="none" />
-                        <text x="8" y="16" fontSize="6" fontWeight="700" fill="#FF4D4D">PDF</text>
+                        <rect x="4" y="3" width="14" height="18" rx="2" ry="2" stroke="rgb(255,77,77)" strokeWidth="1.5" fill="rgba(255,77,77,0.15)" />
+                        <path d="M14 3v5a2 2 0 0 0 2 2h4" stroke="rgb(255,77,77)" strokeWidth="1.5" fill="none" />
+                        <text x="8" y="16" fontSize="6" fontWeight="700" fill="rgb(255,77,77)">PDF</text>
                       </svg>
                     </div>
                   </object>
