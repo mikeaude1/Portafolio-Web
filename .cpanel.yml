@@ -8,6 +8,8 @@ deployment:
     - mkdir -p "$DEPLOYPATH"
     - rm -rf "$DEPLOYPATH"/*
     - cp -a dist/. "$DEPLOYPATH"/
+    # Copiar .htaccess para SPA/HTTPS si existe en public/
+    - cp public/.htaccess "$DEPLOYPATH"/.htaccess || true
 
     # Log final
     - echo "Deploy completado en $DEPLOYPATH a las $(date)"
