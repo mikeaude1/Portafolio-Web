@@ -44,12 +44,25 @@ async function connectDB() {
 const studentsRouter = require('./routes/students');
 const coursesRouter = require('./routes/courses');
 const seedRouter = require('./routes/seed');
+const contactRouter = require('./routes/contact');
 
 app.use('/api/students', studentsRouter);
 app.use('/api/courses', coursesRouter);
 app.use('/api/seed', seedRouter);
+app.use('/api/contact', contactRouter);
 
 // Health check
+app.get('/healthz', (req, res) => {
+  const state = mongoose.connection.readyState;
+  const states = { 0: 'disconnected', 1: 'connected', 2: 'connecting', 3: 'disconnecting' };
+  res.status(200).json({
+    status: 'ok',
+    uptime: Math.round(process.uptime()),
+    db: states[state],
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.get('/', (req, res) => {
   res.send('API de Cursos y Alumnos funcionando');
 });
@@ -60,10 +73,13 @@ app.use((req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-async function start() {
-  await connectDB();
+function start() {
   app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
+  });
+  // Conexión a MongoDB en segundo plano para no bloquear el arranque
+  connectDB().catch((err) => {
+    console.error('Error conectando a MongoDB:', err?.message || err);
   });
 }
 start();

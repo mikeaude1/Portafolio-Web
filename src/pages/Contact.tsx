@@ -4,17 +4,23 @@ export default function Contact() {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<'idle'|'sending'|'sent'|'error'>('idle')
+  const apiBase = (import.meta.env.VITE_API_BASE as string | undefined) ?? '/api'
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setStatus('sending')
     try {
-      // Simula envío por ahora. Podemos integrar Formspree o EmailJS.
-      await new Promise((res) => setTimeout(res, 800))
+      const res = await fetch(`${apiBase}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, message }),
+      })
+      if (!res.ok) throw new Error('send_failed')
       setStatus('sent')
       setEmail('')
       setMessage('')
-    } catch {
+    } catch (err) {
+      console.error(err)
       setStatus('error')
     }
   }
