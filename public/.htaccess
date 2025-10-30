@@ -1,4 +1,4 @@
-# SPA fallback for Vite React app on Apache (Hostinger)
+# SPA fallback for Vite React app on Apache (HostGator)
 <IfModule mod_rewrite.c>
   RewriteEngine On
   # Forzar HTTPS
