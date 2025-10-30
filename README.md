@@ -95,7 +95,6 @@ npm run preview
 ```
 - http://localhost:4173/
 
-> Guía completa de despliegue (backend Node/Express + MongoDB Atlas y frontend en cPanel): ver `DEPLOY.md`.
 ## 🤝 Contribuciones
 ¡Se agradecen ideas y PRs! Abre issues en el repositorio para discutir mejoras.
 

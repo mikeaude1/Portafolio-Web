@@ -1,4 +1,4 @@
-name: Deploy to Hostinger (public_html)
+name: Deploy to HostGator (public_html)
 
 on:
   workflow_dispatch:
@@ -7,14 +7,14 @@ permissions:
   contents: read
 
 concurrency:
-  group: hostinger-deploy
+  group: hostgator-deploy
   cancel-in-progress: true
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment:
-      name: hostinger
+      name: hostgator
       url: https://www.audedev.com/
     env:
       # Defaults
@@ -23,11 +23,11 @@ jobs:
       FTP_PORT_DEFAULT: '21'
       FTP_PROTOCOL_DEFAULT: ftps
       # Secrets as env (para poder usarlos en condiciones)
-      FTP_PASSWORD_SECRET: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-      FTP_SERVER_SECRET: ${{ secrets.HOSTINGER_FTP_SERVER }}
-      FTP_USERNAME_SECRET: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-      FTP_PORT_SECRET: ${{ secrets.HOSTINGER_FTP_PORT }}
-      FTP_PROTOCOL_SECRET: ${{ secrets.HOSTINGER_FTP_PROTOCOL }}
+      FTP_PASSWORD_SECRET: ${{ secrets.HOSTGATOR_FTP_PASSWORD }}
+      FTP_SERVER_SECRET: ${{ secrets.HOSTGATOR_FTP_SERVER }}
+      FTP_USERNAME_SECRET: ${{ secrets.HOSTGATOR_FTP_USERNAME }}
+      FTP_PORT_SECRET: ${{ secrets.HOSTGATOR_FTP_PORT }}
+      FTP_PROTOCOL_SECRET: ${{ secrets.HOSTGATOR_FTP_PROTOCOL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
       - name: Skip deploy when password secret missing
         if: ${{ env.FTP_PASSWORD_SECRET == '' }}
         run: |
-          echo "Skipping deploy: falta HOSTINGER_FTP_PASSWORD"
+          echo "Skipping deploy: falta HOSTGATOR_FTP_PASSWORD"
 
       - name: Resolve FTP inputs
         if: ${{ env.FTP_PASSWORD_SECRET != '' }}
@@ -72,7 +72,7 @@ jobs:
           echo "FTP_PROTOCOL_RESOLVED=$PROTOCOL" >> $GITHUB_ENV
           echo "Resolved server=$SERVER user=$USERNAME port=$PORT protocol=$PROTOCOL"
 
-      - name: Deploy to Hostinger via FTPS (primario)
+      - name: Deploy to HostGator via FTPS (primario)
         id: ftps
         continue-on-error: true
         if: ${{ env.FTP_PASSWORD_SECRET != '' }}
