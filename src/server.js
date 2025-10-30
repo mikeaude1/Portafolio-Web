@@ -8,7 +8,8 @@ const app = express();
 // Middlewares
 // Configuración CORS: en desarrollo permite todo; en producción restringe a dominios conocidos
 const isProd = process.env.NODE_ENV === 'production'
-const allowedFromEnv = (process.env.CORS_ORIGINS ?? '').split(',').map(s => s.trim()).filter(Boolean)
+const allowEnvRaw = (process.env.CORS_ORIGINS ?? process.env.CORS_ORIGIN ?? '')
+const allowedFromEnv = allowEnvRaw.split(',').map(s => s.trim()).filter(Boolean)
 const defaultProdOrigins = [
   'https://audedev.com',
   'https://www.audedev.com',

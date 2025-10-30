@@ -57,7 +57,13 @@ router.post('/', async (req, res) => {
       message: err?.message,
       response: err?.response,
     })
-    return res.status(500).json({ ok: false, error: 'send_failed' })
+    // Devolver detalles mínimos para diagnóstico (sin secretos)
+    return res.status(500).json({
+      ok: false,
+      error: 'send_failed',
+      code: err?.code || err?.name || 'unknown',
+      message: (err?.message || '').slice(0, 160),
+    })
   }
 })
 
