@@ -2,7 +2,7 @@
 deployment:
   tasks:
     # Ruta de despliegue en HostGator/cPanel
-    - export DEPLOYPATH=/home3/audedevc/public_html/
+    - export DEPLOYPATH=$HOME/public_html/
 
     # Despliegue simple: copiar artefactos ya construidos (sin build en servidor)
     - mkdir -p "$DEPLOYPATH"

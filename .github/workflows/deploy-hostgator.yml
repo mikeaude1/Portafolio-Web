@@ -2,6 +2,18 @@ name: Deploy to HostGator (public_html)
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'index.html'
+      - 'vite.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/deploy-hostgator.yml'
+      - 'dist/**'
 
 permissions:
   contents: read
