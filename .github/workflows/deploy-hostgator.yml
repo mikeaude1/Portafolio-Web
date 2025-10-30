@@ -61,10 +61,14 @@ jobs:
       - name: Build
         env:
           VITE_BASE: '/'
+          VITE_API_BASE: '/api'
         run: npm run web:build
 
       - name: Ensure SPA fallback (optional)
         run: cp dist/index.html dist/404.html || true
+
+      - name: Include PHP API en dist
+        run: mkdir -p dist/api && cp public/api/contact.php dist/api/contact.php
 
       - name: Skip deploy when password secret missing
         if: ${{ env.FTP_PASSWORD_SECRET == '' }}
