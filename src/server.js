@@ -44,11 +44,14 @@ app.use(cors({
     const normalizedAllow = [...new Set(rawAllowList.map(normalizeOrigin))]
     const originNorm = normalizeOrigin(origin)
 
-    const allowed = normalizedAllow.some(a => hostKey(a) === hostKey(originNorm))
-    if (allowed) return cb(null, true)
+    const originHost = hostKey(originNorm)
+    const allowedByList = normalizedAllow.some(a => hostKey(a) === originHost)
+    const allowedBySuffix = originHost === 'audedev.com' || originHost.endsWith('.audedev.com')
+    if (allowedByList || allowedBySuffix) return cb(null, true)
 
     console.error('CORS bloqueado', {
       origin: originNorm,
+      originHost,
       allowList: normalizedAllow,
       isProd,
     })
