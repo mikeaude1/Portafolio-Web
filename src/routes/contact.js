@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const nodemailer = require('nodemailer')
 const { Resend } = require('resend')
+const sgMail = require('@sendgrid/mail')
 
 const {
   MAIL_HOST,
@@ -13,6 +14,7 @@ const {
   MAIL_PROVIDER,
   MAIL_FROM,
   RESEND_API_KEY,
+  SENDGRID_API_KEY,
 } = process.env
 
 function createTransporterWith(port, secure) {
@@ -77,6 +79,22 @@ async function sendViaResend(mailOpts) {
   return { info: { messageId: data?.id }, attempt: 'resend/http', provider: 'resend' }
 }
 
+async function sendViaSendgrid(mailOpts) {
+  if (!SENDGRID_API_KEY) {
+    throw new Error('Falta SENDGRID_API_KEY para enviar con SendGrid')
+  }
+  sgMail.setApiKey(SENDGRID_API_KEY)
+  const [resp] = await sgMail.send({
+    to: mailOpts.to,
+    from: mailOpts.from,
+    replyTo: mailOpts.replyTo,
+    subject: mailOpts.subject,
+    text: mailOpts.text,
+  })
+  const msgId = (resp?.headers && (resp.headers['x-message-id'] || resp.headers['x-sendgrid-message-id'])) || undefined
+  return { info: { messageId: msgId }, attempt: 'sendgrid/http', provider: 'sendgrid' }
+}
+
 router.post('/', async (req, res) => {
   const { email, message, name } = req.body || {}
   if (!email || !message) {
@@ -91,7 +109,11 @@ router.post('/', async (req, res) => {
       text: `Nombre: ${name || '-'}\nCorreo: ${email}\n\nMensaje:\n${message}`,
     }
     const provider = (MAIL_PROVIDER || '').toLowerCase()
-    const result = provider === 'resend' ? await sendViaResend(mailOpts) : await sendWithFallback(mailOpts)
+    const result = provider === 'resend'
+      ? await sendViaResend(mailOpts)
+      : provider === 'sendgrid'
+      ? await sendViaSendgrid(mailOpts)
+      : await sendWithFallback(mailOpts)
     return res.status(200).json({ ok: true, messageId: result.info.messageId, transport: result.attempt, provider: result.provider })
   } catch (err) {
     console.error('Error SMTP/Nodemailer:', {
