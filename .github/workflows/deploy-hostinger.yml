@@ -48,8 +48,11 @@ jobs:
         run: cp dist/index.html dist/404.html || true
 
       - name: Skip deploy when password secret missing
-        if: ${{ secrets.HOSTINGER_FTP_PASSWORD == '' }}
-        run: echo "Skipping deploy: falta HOSTINGER_FTP_PASSWORD"
+        env:
+          FTP_PASSWORD_SECRET: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+        if: ${{ env.FTP_PASSWORD_SECRET == '' }}
+        run: |
+          echo "Skipping deploy: falta HOSTINGER_FTP_PASSWORD"
 
       - name: Resolve FTP inputs
         if: ${{ secrets.HOSTINGER_FTP_PASSWORD != '' }}
