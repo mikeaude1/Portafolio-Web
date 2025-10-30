@@ -17,10 +17,17 @@ jobs:
       name: hostinger
       url: https://www.audedev.com/
     env:
+      # Defaults
       FTP_SERVER_DEFAULT: ftp.audedev.com
       FTP_USERNAME_DEFAULT: sitebuilder@audedev.com
       FTP_PORT_DEFAULT: '21'
       FTP_PROTOCOL_DEFAULT: ftps
+      # Secrets as env (para poder usarlos en condiciones)
+      FTP_PASSWORD_SECRET: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+      FTP_SERVER_SECRET: ${{ secrets.HOSTINGER_FTP_SERVER }}
+      FTP_USERNAME_SECRET: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+      FTP_PORT_SECRET: ${{ secrets.HOSTINGER_FTP_PORT }}
+      FTP_PROTOCOL_SECRET: ${{ secrets.HOSTINGER_FTP_PROTOCOL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,19 +55,12 @@ jobs:
         run: cp dist/index.html dist/404.html || true
 
       - name: Skip deploy when password secret missing
-        env:
-          FTP_PASSWORD_SECRET: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         if: ${{ env.FTP_PASSWORD_SECRET == '' }}
         run: |
           echo "Skipping deploy: falta HOSTINGER_FTP_PASSWORD"
 
       - name: Resolve FTP inputs
-        if: ${{ secrets.HOSTINGER_FTP_PASSWORD != '' }}
-        env:
-          FTP_SERVER_SECRET: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          FTP_USERNAME_SECRET: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-          FTP_PORT_SECRET: ${{ secrets.HOSTINGER_FTP_PORT }}
-          FTP_PROTOCOL_SECRET: ${{ secrets.HOSTINGER_FTP_PROTOCOL }}
+        if: ${{ env.FTP_PASSWORD_SECRET != '' }}
         run: |
           SERVER="${FTP_SERVER_SECRET:-${FTP_SERVER_DEFAULT}}"
           USERNAME="${FTP_USERNAME_SECRET:-${FTP_USERNAME_DEFAULT}}"
@@ -75,12 +75,12 @@ jobs:
       - name: Deploy to Hostinger via FTPS (primario)
         id: ftps
         continue-on-error: true
-        if: ${{ secrets.HOSTINGER_FTP_PASSWORD != '' }}
+        if: ${{ env.FTP_PASSWORD_SECRET != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ env.FTP_SERVER_RESOLVED }}
           username: ${{ env.FTP_USERNAME_RESOLVED }}
-          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          password: ${{ env.FTP_PASSWORD_SECRET }}
           local-dir: ./dist/
           server-dir: /public_html/
           protocol: ${{ env.FTP_PROTOCOL_RESOLVED }}
@@ -93,12 +93,12 @@ jobs:
             **/src/**
 
       - name: Fallback deploy via FTP (si FTPS falla)
-        if: ${{ steps.ftps.outcome == 'failure' && secrets.HOSTINGER_FTP_PASSWORD != '' }}
+        if: ${{ steps.ftps.outcome == 'failure' && env.FTP_PASSWORD_SECRET != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ env.FTP_SERVER_RESOLVED }}
           username: ${{ env.FTP_USERNAME_RESOLVED }}
-          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          password: ${{ env.FTP_PASSWORD_SECRET }}
           local-dir: ./dist/
           server-dir: /public_html/
           protocol: ftp
