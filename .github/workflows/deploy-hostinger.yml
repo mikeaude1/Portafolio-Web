@@ -1,10 +1,6 @@
 name: Deploy to Hostinger (public_html)
 
 on:
-  push:
-    branches: [ main ]
-    tags:
-      - 'v*'
   workflow_dispatch:
 
 permissions:
@@ -16,7 +12,13 @@ concurrency:
 
 jobs:
   build-and-deploy:
+    if: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
     runs-on: ubuntu-latest
+    env:
+      FTP_SERVER_DEFAULT: ftp.audedev.com
+      FTP_USERNAME_DEFAULT: sitebuilder@audedev.com
+      FTP_PORT_DEFAULT: '21'
+      FTP_PROTOCOL_DEFAULT: ftps
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,16 +48,14 @@ jobs:
       - name: Deploy to Hostinger via FTP (FTPS)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
-          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          server: ${{ secrets.HOSTINGER_FTP_SERVER || env.FTP_SERVER_DEFAULT }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME || env.FTP_USERNAME_DEFAULT }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /public_html/
-          protocol: ftps
-          port: 21
+          protocol: ${{ secrets.HOSTINGER_FTP_PROTOCOL || env.FTP_PROTOCOL_DEFAULT }}
+          port: ${{ secrets.HOSTINGER_FTP_PORT || env.FTP_PORT_DEFAULT }}
           timeout: 600000
-          log-level: verbose
-          dangerous-clean-slate: true
           exclude: |
             **/.git*
             **/.git*/**

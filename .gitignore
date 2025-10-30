@@ -23,3 +23,6 @@ node_modules
 # Ignorar artefactos pesados que no deben versionarse
 /public/proyectos/
 /public/proyectos/*.exe
+
+# Seguridad: no versionar variables de entorno locales
+.env

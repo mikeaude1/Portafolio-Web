@@ -15,11 +15,17 @@ function createTransporter() {
   if (!MAIL_HOST || !MAIL_PORT || !MAIL_USER || !MAIL_PASS || !MAIL_TO) {
     throw new Error('Faltan variables de entorno SMTP: MAIL_HOST, MAIL_PORT, MAIL_USER, MAIL_PASS, MAIL_TO')
   }
+  const port = Number(MAIL_PORT) || 587
+  const secure = (MAIL_SECURE === 'true') || port === 465
   const transporter = nodemailer.createTransport({
     host: MAIL_HOST,
-    port: Number(MAIL_PORT),
-    secure: (MAIL_SECURE === 'true') || Number(MAIL_PORT) === 465,
+    port,
+    secure,
     auth: { user: MAIL_USER, pass: MAIL_PASS },
+    requireTLS: !secure, // usar STARTTLS cuando no es conexión segura directa
+    tls: { minVersion: 'TLSv1.2' },
+    connectionTimeout: 15000,
+    socketTimeout: 15000,
     logger: true,
     debug: true,
   })
