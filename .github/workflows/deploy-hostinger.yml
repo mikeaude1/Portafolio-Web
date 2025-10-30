@@ -14,6 +14,9 @@ jobs:
   build-and-deploy:
     if: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
     runs-on: ubuntu-latest
+    environment:
+      name: hostinger
+      url: https://www.audedev.com/
     env:
       FTP_SERVER_DEFAULT: ftp.audedev.com
       FTP_USERNAME_DEFAULT: sitebuilder@audedev.com
@@ -45,16 +48,24 @@ jobs:
       - name: Ensure SPA fallback (optional)
         run: cp dist/index.html dist/404.html || true
 
+      - name: Resolve FTP inputs
+        run: |
+          echo "FTP_SERVER_RESOLVED=${{ secrets.HOSTINGER_FTP_SERVER || env.FTP_SERVER_DEFAULT }}" >> $GITHUB_ENV
+          echo "FTP_USERNAME_RESOLVED=${{ secrets.HOSTINGER_FTP_USERNAME || env.FTP_USERNAME_DEFAULT }}" >> $GITHUB_ENV
+          echo "FTP_PORT_RESOLVED=${{ secrets.HOSTINGER_FTP_PORT || env.FTP_PORT_DEFAULT }}" >> $GITHUB_ENV
+          echo "FTP_PROTOCOL_RESOLVED=${{ secrets.HOSTINGER_FTP_PROTOCOL || env.FTP_PROTOCOL_DEFAULT }}" >> $GITHUB_ENV
+          echo "Resolved server=$FTP_SERVER_RESOLVED user=$FTP_USERNAME_RESOLVED port=$FTP_PORT_RESOLVED protocol=$FTP_PROTOCOL_RESOLVED"
+
       - name: Deploy to Hostinger via FTP (FTPS)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
-          server: ${{ secrets.HOSTINGER_FTP_SERVER || env.FTP_SERVER_DEFAULT }}
-          username: ${{ secrets.HOSTINGER_FTP_USERNAME || env.FTP_USERNAME_DEFAULT }}
+          server: ${{ env.FTP_SERVER_RESOLVED }}
+          username: ${{ env.FTP_USERNAME_RESOLVED }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /public_html/
-          protocol: ${{ secrets.HOSTINGER_FTP_PROTOCOL || env.FTP_PROTOCOL_DEFAULT }}
-          port: ${{ secrets.HOSTINGER_FTP_PORT || env.FTP_PORT_DEFAULT }}
+          protocol: ${{ env.FTP_PROTOCOL_RESOLVED }}
+          port: ${{ env.FTP_PORT_RESOLVED }}
           timeout: 600000
           exclude: |
             **/.git*
