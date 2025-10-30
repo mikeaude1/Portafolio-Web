@@ -12,11 +12,10 @@ concurrency:
 
 jobs:
   build-and-deploy:
--    if: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-     runs-on: ubuntu-latest
-     environment:
-       name: hostinger
-       url: https://www.audedev.com/
+    runs-on: ubuntu-latest
+    environment:
+      name: hostinger
+      url: https://www.audedev.com/
     env:
       FTP_SERVER_DEFAULT: ftp.audedev.com
       FTP_USERNAME_DEFAULT: sitebuilder@audedev.com
@@ -50,10 +49,10 @@ jobs:
 
       - name: Skip deploy when password secret missing
         if: ${{ secrets.HOSTINGER_FTP_PASSWORD == '' }}
-        run: |
-          echo "Skipping deploy: falta HOSTINGER_FTP_PASSWORD"
+        run: echo "Skipping deploy: falta HOSTINGER_FTP_PASSWORD"
 
       - name: Resolve FTP inputs
+        if: ${{ secrets.HOSTINGER_FTP_PASSWORD != '' }}
         run: |
           echo "FTP_SERVER_RESOLVED=${{ secrets.HOSTINGER_FTP_SERVER || env.FTP_SERVER_DEFAULT }}" >> $GITHUB_ENV
           echo "FTP_USERNAME_RESOLVED=${{ secrets.HOSTINGER_FTP_USERNAME || env.FTP_USERNAME_DEFAULT }}" >> $GITHUB_ENV
@@ -64,7 +63,7 @@ jobs:
       - name: Deploy to Hostinger via FTPS (primario)
         id: ftps
         continue-on-error: true
-+       if: ${{ secrets.HOSTINGER_FTP_PASSWORD != '' }}
+        if: ${{ secrets.HOSTINGER_FTP_PASSWORD != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ env.FTP_SERVER_RESOLVED }}
@@ -80,9 +79,9 @@ jobs:
             **/.git*/**
             **/node_modules/**
             **/src/**
+
       - name: Fallback deploy via FTP (si FTPS falla)
--       if: ${{ steps.ftps.outcome == 'failure' }}
-+       if: ${{ steps.ftps.outcome == 'failure' && secrets.HOSTINGER_FTP_PASSWORD != '' }}
+        if: ${{ steps.ftps.outcome == 'failure' && secrets.HOSTINGER_FTP_PASSWORD != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ env.FTP_SERVER_RESOLVED }}
