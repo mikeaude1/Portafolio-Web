@@ -15,6 +15,7 @@ const {
   MAIL_FROM,
   RESEND_API_KEY,
   SENDGRID_API_KEY,
++  PHP_ENDPOINT,
 } = process.env
 
 function createTransporterWith(port, secure) {
@@ -95,6 +96,23 @@ async function sendViaSendgrid(mailOpts) {
   return { info: { messageId: msgId }, attempt: 'sendgrid/http', provider: 'sendgrid' }
 }
 
++async function sendViaPhpProxy(email, message, name) {
++  const endpoint = PHP_ENDPOINT || 'https://audedev.com/api/contact'
++  const resp = await fetch(endpoint, {
++    method: 'POST',
++    headers: { 'Content-Type': 'application/json' },
++    body: JSON.stringify({ email, message, name }),
++  })
++  if (!resp.ok) {
++    const text = await resp.text().catch(() => '')
++    const err = new Error(`php_proxy_failed ${resp.status}`)
++    err.code = 'PHP_PROXY_FAILED'
++    err.response = text.slice(0, 160)
++    throw err
++  }
++  const data = await resp.json().catch(() => ({}))
++  return { info: { messageId: data?.messageId }, attempt: 'php/proxy', provider: 'php_proxy' }
++}
 router.post('/', async (req, res) => {
   const { email, message, name } = req.body || {}
   if (!email || !message) {
@@ -109,11 +127,31 @@ router.post('/', async (req, res) => {
       text: `Nombre: ${name || '-'}\nCorreo: ${email}\n\nMensaje:\n${message}`,
     }
     const provider = (MAIL_PROVIDER || '').toLowerCase()
-    const result = provider === 'resend'
-      ? await sendViaResend(mailOpts)
-      : provider === 'sendgrid'
-      ? await sendViaSendgrid(mailOpts)
-      : await sendWithFallback(mailOpts)
+-    const result = provider === 'resend'
+-      ? await sendViaResend(mailOpts)
+-      : provider === 'sendgrid'
+-      ? await sendViaSendgrid(mailOpts)
+-      : await sendWithFallback(mailOpts)
++    let result
++    if (provider === 'php' || provider === 'php_proxy') {
++      result = await sendViaPhpProxy(email, message, name)
++    } else if (provider === 'resend') {
++      result = await sendViaResend(mailOpts)
++    } else if (provider === 'sendgrid') {
++      result = await sendViaSendgrid(mailOpts)
++    } else {
++      try {
++        result = await sendWithFallback(mailOpts)
++      } catch (err) {
++        const code = err?.code || err?.name
++        const retriable = code === 'ETIMEDOUT' || code === 'ECONNECTION' || code === 'ESOCKET'
++        if (retriable && PHP_ENDPOINT) {
++          result = await sendViaPhpProxy(email, message, name)
++        } else {
++          throw err
++        }
++      }
++    }
     return res.status(200).json({ ok: true, messageId: result.info.messageId, transport: result.attempt, provider: result.provider })
   } catch (err) {
     console.error('Error SMTP/Nodemailer:', {
