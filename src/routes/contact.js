@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const nodemailer = require('nodemailer')
+const { Resend } = require('resend')
 
 const {
   MAIL_HOST,
@@ -9,6 +10,9 @@ const {
   MAIL_USER,
   MAIL_PASS,
   MAIL_TO,
+  MAIL_PROVIDER,
+  MAIL_FROM,
+  RESEND_API_KEY,
 } = process.env
 
 function createTransporterWith(port, secure) {
@@ -43,7 +47,7 @@ async function sendWithFallback(mailOpts) {
     const t = createTransporterWith(primaryPort, primarySecure)
     await t.verify()
     const info = await t.sendMail(mailOpts)
-    return { info, attempt: `${primaryPort}/${primarySecure ? 'secure' : 'starttls'}` }
+    return { info, attempt: `${primaryPort}/${primarySecure ? 'secure' : 'starttls'}`, provider: 'smtp' }
   } catch (err) {
     const code = err?.code || err?.name
     const retriable = code === 'ETIMEDOUT' || code === 'ECONNECTION' || code === 'ESOCKET'
@@ -53,8 +57,24 @@ async function sendWithFallback(mailOpts) {
     const t2 = createTransporterWith(fallbackPort, fallbackSecure)
     await t2.verify()
     const info2 = await t2.sendMail(mailOpts)
-    return { info: info2, attempt: `${fallbackPort}/${fallbackSecure ? 'secure' : 'starttls'}` }
+    return { info: info2, attempt: `${fallbackPort}/${fallbackSecure ? 'secure' : 'starttls'}`, provider: 'smtp' }
   }
+}
+
+async function sendViaResend(mailOpts) {
+  if (!RESEND_API_KEY) {
+    throw new Error('Falta RESEND_API_KEY para enviar con Resend')
+  }
+  const resend = new Resend(RESEND_API_KEY)
+  const { data, error } = await resend.emails.send({
+    from: mailOpts.from,
+    to: mailOpts.to,
+    reply_to: mailOpts.replyTo,
+    subject: mailOpts.subject,
+    text: mailOpts.text,
+  })
+  if (error) throw error
+  return { info: { messageId: data?.id }, attempt: 'resend/http', provider: 'resend' }
 }
 
 router.post('/', async (req, res) => {
@@ -64,14 +84,15 @@ router.post('/', async (req, res) => {
   }
   try {
     const mailOpts = {
-      from: MAIL_USER,
+      from: MAIL_FROM || MAIL_USER,
       replyTo: email,
       to: MAIL_TO,
       subject: 'Nuevo mensaje desde el sitio web',
       text: `Nombre: ${name || '-'}\nCorreo: ${email}\n\nMensaje:\n${message}`,
     }
-    const { info, attempt } = await sendWithFallback(mailOpts)
-    return res.status(200).json({ ok: true, messageId: info.messageId, transport: attempt })
+    const provider = (MAIL_PROVIDER || '').toLowerCase()
+    const result = provider === 'resend' ? await sendViaResend(mailOpts) : await sendWithFallback(mailOpts)
+    return res.status(200).json({ ok: true, messageId: result.info.messageId, transport: result.attempt, provider: result.provider })
   } catch (err) {
     console.error('Error SMTP/Nodemailer:', {
       name: err?.name,
