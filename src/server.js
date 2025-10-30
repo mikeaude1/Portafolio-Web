@@ -14,12 +14,23 @@ const defaultProdOrigins = [
   'https://audedev.com',
   'https://www.audedev.com',
 ]
+function normalizeOrigin(o) {
+  try {
+    const url = new URL(o.includes('://') ? o : `https://${o}`)
+    return url.origin
+  } catch {
+    return o
+  }
+}
+
 app.use(cors({
   origin: (origin, cb) => {
     if (!origin) return cb(null, true) // llamadas server-side o same-origin
     if (!isProd) return cb(null, true)
-    const allowList = allowedFromEnv.length ? allowedFromEnv : defaultProdOrigins
+    const rawAllowList = allowedFromEnv.length ? allowedFromEnv : defaultProdOrigins
+    const allowList = rawAllowList.map(normalizeOrigin)
     if (allowList.includes(origin)) return cb(null, true)
+    console.error('CORS bloqueado', { origin, allowList, isProd })
     return cb(new Error('Not allowed by CORS'))
   },
   methods: ['GET', 'POST', 'OPTIONS'],
