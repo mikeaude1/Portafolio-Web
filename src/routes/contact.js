@@ -20,7 +20,6 @@ function createTransporter() {
     port: Number(MAIL_PORT),
     secure: (MAIL_SECURE === 'true') || Number(MAIL_PORT) === 465,
     auth: { user: MAIL_USER, pass: MAIL_PASS },
-    authMethod: 'LOGIN',
     logger: true,
     debug: true,
   })
