@@ -11,8 +11,8 @@
   
   RewriteBase /
 
-  # API en producción: el frontend llama al backend externo (Render)
-  # No hay endpoint PHP local; se elimina el rewrite.
+  # API local en hosting: dirigir /api/contact al endpoint PHP
+  RewriteRule ^api/contact$ /api/contact.php [L]
 
   # Serve existing files normally (no bloquear por directorios)
   RewriteCond %{REQUEST_FILENAME} -f

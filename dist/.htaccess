@@ -11,6 +11,9 @@
   
   RewriteBase /
 
+  # API en producción: el frontend llama al backend externo (Render)
+  # No hay endpoint PHP local; se elimina el rewrite.
+
   # Serve existing files normally (no bloquear por directorios)
   RewriteCond %{REQUEST_FILENAME} -f
   RewriteRule ^ - [L]
@@ -28,12 +31,13 @@ Options -MultiViews
 # Optional: basic cache headers for static assets
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css "access plus 1 month"
-  ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType image/svg+xml "access plus 1 month"
-  ExpiresByType image/png "access plus 1 month"
-  ExpiresByType image/jpeg "access plus 1 month"
-  ExpiresByType application/pdf "access plus 1 month"
+  ExpiresByType text/html "access plus 1 minutes"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
 </IfModule>
 
 # Security: prevent directory listing
@@ -41,4 +45,5 @@ Options -Indexes
 <IfModule mod_headers.c>
   Header always set Strict-Transport-Security "max-age=0"
   Header always set Content-Security-Policy "upgrade-insecure-requests; block-all-mixed-content"
+  Header set Cache-Control "public, max-age=31536000"
 </IfModule>
