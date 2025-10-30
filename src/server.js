@@ -14,12 +14,24 @@ const defaultProdOrigins = [
   'https://audedev.com',
   'https://www.audedev.com',
 ]
+function sanitizeOriginString(s) {
+  return s.replace(/[\'"`]/g, '').trim()
+}
 function normalizeOrigin(o) {
   try {
-    const url = new URL(o.includes('://') ? o : `https://${o}`)
+    const cleaned = sanitizeOriginString(o)
+    const url = new URL(cleaned.includes('://') ? cleaned : `https://${cleaned}`)
     return url.origin
   } catch {
     return o
+  }
+}
+function hostKey(originStr) {
+  try {
+    const u = new URL(originStr)
+    return u.host.replace(/^www\./, '')
+  } catch {
+    return originStr
   }
 }
 
@@ -27,10 +39,19 @@ app.use(cors({
   origin: (origin, cb) => {
     if (!origin) return cb(null, true) // llamadas server-side o same-origin
     if (!isProd) return cb(null, true)
+
     const rawAllowList = allowedFromEnv.length ? allowedFromEnv : defaultProdOrigins
-    const allowList = rawAllowList.map(normalizeOrigin)
-    if (allowList.includes(origin)) return cb(null, true)
-    console.error('CORS bloqueado', { origin, allowList, isProd })
+    const normalizedAllow = [...new Set(rawAllowList.map(normalizeOrigin))]
+    const originNorm = normalizeOrigin(origin)
+
+    const allowed = normalizedAllow.some(a => hostKey(a) === hostKey(originNorm))
+    if (allowed) return cb(null, true)
+
+    console.error('CORS bloqueado', {
+      origin: originNorm,
+      allowList: normalizedAllow,
+      isProd,
+    })
     return cb(new Error('Not allowed by CORS'))
   },
   methods: ['GET', 'POST', 'OPTIONS'],
