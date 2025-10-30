@@ -66,10 +66,12 @@ $headers[] = 'X-Mailer: PHP/' . phpversion();
 
 $headersStr = implode("\r\n", $headers);
 
-$ok = @mail($TO, $subject, $body, $headersStr);
+// Envelope sender mejora la entregabilidad y evita fallas por políticas anti-spam
+$envelopeSender = $FROM_ADDR;
+$ok = @mail($TO, $subject, $body, $headersStr, '-f' . $envelopeSender);
 
 if ($ok) {
-  echo json_encode([ 'ok' => true, 'provider' => 'php_mail' ]);
+  echo json_encode([ 'ok' => true, 'provider' => 'php_mail', 'envelope' => $envelopeSender ]);
 } else {
   http_response_code(500);
   echo json_encode([ 'ok' => false, 'error' => 'send_failed' ]);

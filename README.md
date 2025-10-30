@@ -95,6 +95,29 @@ npm run preview
 ```
 - http://localhost:4173/
 
+## ✉️ Formulario de contacto y correo
+- Backend expone `POST /api/contact` en `src/routes/contact.js`.
+- Usa SendGrid por `HTTPS` si `SENDGRID_API_KEY` está configurado; si no, intenta SMTP como fallback.
+- Variables:
+  - `SENDGRID_API_KEY` (recomendado).
+  - `MAIL_TO` (destino obligatorio).
+  - `MAIL_FROM` (remitente opcional, si no se usa `MAIL_USER`).
+  - `MAIL_HOST`, `MAIL_PORT`, `MAIL_SECURE`, `MAIL_USER`, `MAIL_PASS` (solo para SMTP).
+
+### Pasos rápidos con SendGrid
+- Crear una API Key en SendGrid con permiso `Mail Send` (o `Full Access`).
+- Guardarla como `SENDGRID_API_KEY` en tu entorno de backend.
+- Autenticar el dominio en SendGrid y añadir los CNAME/TXT requeridos en tu DNS.
+- Probar con `curl` o el formulario desde `Contact`.
+
+### Desarrollo
+- Frontend (`vite`) proxy a `http://localhost:3000` para `/api` (ver `vite.config.ts`).
+- Ejecuta `npm run dev` para iniciar backend y frontend.
+
+### Producción en HostGator (PHP)
+- `.htaccess` redirige `/api/contact` a `public/api/contact.php`.
+- Si prefieres Node en producción, mantén `VITE_API_BASE` apuntando al backend público y usa SendGrid API.
+
 ## 🤝 Contribuciones
 ¡Se agradecen ideas y PRs! Abre issues en el repositorio para discutir mejoras.
 

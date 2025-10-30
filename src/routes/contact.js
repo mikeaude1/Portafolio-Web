@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const nodemailer = require('nodemailer')
+const sgMail = require('@sendgrid/mail')
 
 const {
   MAIL_HOST,
@@ -11,6 +12,8 @@ const {
   MAIL_TO,
   MAIL_FROM,
 } = process.env
+
+const { SENDGRID_API_KEY } = process.env
 
 function createTransporterWith(port, secure) {
   const transporter = nodemailer.createTransport({
@@ -58,7 +61,21 @@ async function sendWithFallback(mailOpts) {
   }
 }
 
-
+async function sendWithSendGrid(mailOpts, replyEmail) {
+  if (!SENDGRID_API_KEY) throw new Error('Falta SENDGRID_API_KEY')
+  sgMail.setApiKey(SENDGRID_API_KEY)
+  const msg = {
+    to: mailOpts.to,
+    from: mailOpts.from,
+    replyTo: replyEmail,
+    subject: mailOpts.subject,
+    text: mailOpts.text,
+    // html opcional si luego lo quieres añadir
+  }
+  const [resp] = await sgMail.send(msg)
+  const messageId = (resp?.headers?.['x-message-id']) || (resp?.headers?.['X-Message-Id']) || undefined
+  return { messageId, provider: 'sendgrid', attempt: 'https/api' }
+}
 
 router.post('/', async (req, res) => {
   const { email, message, name } = req.body || {}
@@ -73,11 +90,16 @@ router.post('/', async (req, res) => {
       subject: 'Nuevo mensaje desde el sitio web',
       text: `Nombre: ${name || '-'}\nCorreo: ${email}\n\nMensaje:\n${message}`,
     }
-    // Siempre usamos SMTP con fallback de puerto/secure
-    const result = await sendWithFallback(mailOpts)
-    return res.status(200).json({ ok: true, messageId: result.info.messageId, transport: result.attempt, provider: 'smtp' })
+    let result
+    if (SENDGRID_API_KEY) {
+      result = await sendWithSendGrid(mailOpts, email)
+    } else {
+      // fallback SMTP si no hay API
+      result = await sendWithFallback(mailOpts)
+    }
+    return res.status(200).json({ ok: true, messageId: result.messageId || result.info?.messageId, transport: result.attempt, provider: result.provider })
   } catch (err) {
-    console.error('Error SMTP/Nodemailer:', {
+    console.error('Error al enviar correo:', {
       name: err?.name,
       code: err?.code,
       message: err?.message,
