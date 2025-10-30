@@ -4,7 +4,5 @@ deployment:
     - /bin/mkdir -p "/home3/audedevc/public_html"
     - command -v rsync >/dev/null 2>&1 && /usr/bin/rsync -av --delete --chmod=F644,D755 dist/ "/home3/audedevc/public_html/" || /bin/cp -a dist/. "/home3/audedevc/public_html"/
     - /bin/cp public/.htaccess "/home3/audedevc/public_html"/.htaccess || true
-    - /bin/mkdir -p "/home3/audedevc/public_html/api"
-    - /bin/cp public/api/contact.php "/home3/audedevc/public_html"/api/contact.php
-    - /bin/cp public/api/config.php "/home3/audedevc/public_html"/api/config.php
+    # Ya no se necesita /api en el hosting; se usa backend externo (Render)
     - /bin/echo "Deploy completado en /home3/audedevc/public_html a las $(date)"
