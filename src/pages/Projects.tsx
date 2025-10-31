@@ -47,7 +47,7 @@ export default function Projects() {
             <div className="project-info">
               <h3 className="project-title">
                 {p.name}
-                {(Array.isArray(p.status) ? p.status.includes('local') : p.status === 'local') && (
+                {Array.isArray(p.status) && p.status.includes('local') && (
                   <span className="badge local" title="Solo ambiente local">Local</span>
                 )}
               </h3>
