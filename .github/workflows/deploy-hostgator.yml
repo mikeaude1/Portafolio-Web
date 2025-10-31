@@ -98,7 +98,7 @@ jobs:
           username: ${{ env.FTP_USERNAME_RESOLVED }}
           password: ${{ env.FTP_PASSWORD_SECRET }}
           local-dir: ./dist/
-          server-dir: /
+          server-dir: /public_html/
           protocol: ${{ env.FTP_PROTOCOL_RESOLVED }}
           port: ${{ env.FTP_PORT_RESOLVED }}
           timeout: 600000
@@ -116,7 +116,7 @@ jobs:
           username: ${{ env.FTP_USERNAME_RESOLVED }}
           password: ${{ env.FTP_PASSWORD_SECRET }}
           local-dir: ./public/api/
-          server-dir: /api/
+          server-dir: /public_html/api/
           protocol: ${{ env.FTP_PROTOCOL_RESOLVED }}
           port: ${{ env.FTP_PORT_RESOLVED }}
           timeout: 600000
@@ -129,7 +129,7 @@ jobs:
           username: ${{ env.FTP_USERNAME_RESOLVED }}
           password: ${{ env.FTP_PASSWORD_SECRET }}
           local-dir: ./dist/
-          server-dir: /
+          server-dir: /public_html/
           protocol: ftp
           port: 21
           timeout: 600000
