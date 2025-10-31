@@ -23,7 +23,7 @@ export default function Projects() {
       description: 'Proyecto Django para despacho legal. Demo en línea disponible.',
       image: '/images/projects/molinarslayer.jpg',
       repo: 'https://github.com/mikeaude1/Molinar-slayer',
-      demo: 'https://molinarslayer.audedev.com/',
+    demo: 'https://molinarlayer.audedev.com/',
       tags: ['javascript', 'css', 'python', 'django', 'html5','React', 'Vite', 'CSS'],
       status: ['repo','online'],
     },
