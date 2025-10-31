@@ -1,7 +1,7 @@
 deployment:
   tasks:
-    - /bin/echo "Inicio de deploy: $(date)"
-    - /bin/mkdir -p /home3/audedevc/public_html
-    - /bin/cp -a dist/. /home3/audedevc/public_html/
-    - /bin/cp public/.htaccess /home3/audedevc/public_html/.htaccess || true
-    - /bin/echo "Deploy completado en /home3/audedevc/public_html a las $(date)"
+    - /bin/echo Deploy start $(date)
+    - /bin/mkdir -p $HOME/public_html
+    - /bin/cp -R dist/* $HOME/public_html/
+    - /bin/cp -f dist/.htaccess $HOME/public_html/.htaccess || true
+    - /bin/echo Deploy end $(date)
