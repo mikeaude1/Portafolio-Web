@@ -1,12 +1,8 @@
----
 deployment:
   tasks:
     - /bin/echo "Inicio de deploy: $(date)"
-    - /bin/mkdir -p "/home3/audedevc/public_html" "/home3/audedevc/public_html/assets" "/home3/audedevc/public_html/api"
-    - /bin/find "/home3/audedevc/public_html/assets" -maxdepth 1 -type f -name "index-*.css" -delete || true
-    - /bin/find "/home3/audedevc/public_html/assets" -maxdepth 1 -type f -name "index-*.js" -delete || true
-    - /bin/cp -a dist/. "/home3/audedevc/public_html"/
-    - /bin/cp public/.htaccess "/home3/audedevc/public_html"/.htaccess || true
-    - /bin/mkdir -p "/home3/audedevc/public_html/api"
-    - /bin/cp public/api/contact.php "/home3/audedevc/public_html"/api/contact.php || true
+    - /bin/mkdir -p /home3/audedevc/public_html /home3/audedevc/public_html/api
+    - /bin/cp -a dist/. /home3/audedevc/public_html/
+    - /bin/cp public/.htaccess /home3/audedevc/public_html/.htaccess || true
+    - /bin/cp public/api/contact.php /home3/audedevc/public_html/api/contact.php || true
     - /bin/echo "Deploy completado en /home3/audedevc/public_html a las $(date)"
