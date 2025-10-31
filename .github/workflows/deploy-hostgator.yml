@@ -108,6 +108,19 @@ jobs:
             **/node_modules/**
             **/src/**
 
+      - name: Deploy PHP API directamente (FTPS)
+        if: ${{ env.FTP_PASSWORD_SECRET != '' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ env.FTP_SERVER_RESOLVED }}
+          username: ${{ env.FTP_USERNAME_RESOLVED }}
+          password: ${{ env.FTP_PASSWORD_SECRET }}
+          local-dir: ./public/api/
+          server-dir: /public_html/api/
+          protocol: ${{ env.FTP_PROTOCOL_RESOLVED }}
+          port: ${{ env.FTP_PORT_RESOLVED }}
+          timeout: 600000
+
       - name: Fallback deploy via FTP (si FTPS falla)
         if: ${{ steps.ftps.outcome == 'failure' && env.FTP_PASSWORD_SECRET != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
