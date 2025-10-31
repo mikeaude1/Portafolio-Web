@@ -11,7 +11,7 @@
   
   RewriteBase /
 
-  # API local en producción: reescribir a PHP
+  # API local en hosting: dirigir /api/contact al endpoint PHP
   RewriteRule ^api/contact$ /api/contact.php [L]
 
   # Serve existing files normally (no bloquear por directorios)
