@@ -40,6 +40,8 @@ jobs:
       FTP_USERNAME_SECRET: ${{ secrets.HOSTGATOR_FTP_USERNAME }}
       FTP_PORT_SECRET: ${{ secrets.HOSTGATOR_FTP_PORT }}
       FTP_PROTOCOL_SECRET: ${{ secrets.HOSTGATOR_FTP_PROTOCOL }}
+      FTP_SERVER_DIR_DEFAULT: '/public_html/'
+      FTP_SERVER_DIR_SECRET: ${{ secrets.HOSTGATOR_FTP_SERVER_DIR }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -82,11 +84,13 @@ jobs:
           USERNAME="${FTP_USERNAME_SECRET:-${FTP_USERNAME_DEFAULT}}"
           PORT="${FTP_PORT_SECRET:-${FTP_PORT_DEFAULT}}"
           PROTOCOL="${FTP_PROTOCOL_SECRET:-${FTP_PROTOCOL_DEFAULT}}"
+          SERVER_DIR="${FTP_SERVER_DIR_SECRET:-${FTP_SERVER_DIR_DEFAULT}}"
           echo "FTP_SERVER_RESOLVED=$SERVER" >> $GITHUB_ENV
           echo "FTP_USERNAME_RESOLVED=$USERNAME" >> $GITHUB_ENV
           echo "FTP_PORT_RESOLVED=$PORT" >> $GITHUB_ENV
           echo "FTP_PROTOCOL_RESOLVED=$PROTOCOL" >> $GITHUB_ENV
-          echo "Resolved server=$SERVER user=$USERNAME port=$PORT protocol=$PROTOCOL"
+          echo "FTP_SERVER_DIR_RESOLVED=$SERVER_DIR" >> $GITHUB_ENV
+          echo "Resolved server=$SERVER user=$USERNAME port=$PORT protocol=$PROTOCOL server-dir=$SERVER_DIR"
 
       - name: Deploy to HostGator via FTPS (primario)
         id: ftps
@@ -98,7 +102,7 @@ jobs:
           username: ${{ env.FTP_USERNAME_RESOLVED }}
           password: ${{ env.FTP_PASSWORD_SECRET }}
           local-dir: ./dist/
-          server-dir: /public_html/
+          server-dir: ${{ env.FTP_SERVER_DIR_RESOLVED }}
           protocol: ${{ env.FTP_PROTOCOL_RESOLVED }}
           port: ${{ env.FTP_PORT_RESOLVED }}
           timeout: 600000
@@ -129,7 +133,7 @@ jobs:
           username: ${{ env.FTP_USERNAME_RESOLVED }}
           password: ${{ env.FTP_PASSWORD_SECRET }}
           local-dir: ./dist/
-          server-dir: /public_html/
+          server-dir: ${{ env.FTP_SERVER_DIR_RESOLVED }}
           protocol: ftp
           port: 21
           timeout: 600000
@@ -138,3 +142,4 @@ jobs:
             **/.git*/**
             **/node_modules/**
             **/src/**
+            api/**
