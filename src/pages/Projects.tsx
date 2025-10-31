@@ -45,7 +45,12 @@ export default function Projects() {
               )}
             </div>
             <div className="project-info">
-              <h3 className="project-title">{p.name} {p.status === 'local' && (<span className="badge local" title="Solo ambiente local">Local</span>)}</h3>
+              <h3 className="project-title">
+                {p.name}
+                {(Array.isArray(p.status) ? p.status.includes('local') : p.status === 'local') && (
+                  <span className="badge local" title="Solo ambiente local">Local</span>
+                )}
+              </h3>
               <p className="project-desc">{p.description}</p>
               <div className="project-tags">
                 {p.tags.map((t) => (
