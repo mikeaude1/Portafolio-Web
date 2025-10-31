@@ -60,15 +60,5 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: rgb(33,53,71);
-    background-color: rgb(255,255,255);
-  }
-  a:hover {
-    color: rgb(116,123,255);
-  }
-  button {
-    background-color: rgb(249,249,249);
-  }
-}
+/* Desactivado override de esquema claro para mantener tema oscuro consistente.
+   Si se desea habilitar un tema claro, ajustar también body y variables. */
