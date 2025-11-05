@@ -5,10 +5,15 @@ body {
   padding: 0;
 }
 
+:root {
+  /* Guía horizontal unificada para navbar y contenido */
+  --container-padding-x: 1.5rem;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0; /* evitar desplazamiento global que descuadra respecto al navbar */
   text-align: center;
 }
 
@@ -60,8 +65,10 @@ body {
   max-width: 1024px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: var(--container-padding-x);
   text-align: left;
+  /* Permite que el contenido empuje el footer al fondo del viewport */
+  flex: 1 1 auto;
 }
 
 .page {
@@ -86,7 +93,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 1.5rem;
+  padding: 1rem var(--container-padding-x);
   border-bottom: 1px solid rgba(100, 108, 255, 0.2);
   background: rgba(45, 212, 191, 0.08);
   position: sticky;
@@ -288,6 +295,10 @@ body {
 
 /* Home: Responsive */
 @media (max-width: 640px) {
+  /* Ajustar la guía horizontal en móvil para todo el sitio */
+  :root {
+    --container-padding-x: 1rem;
+  }
   .hero-header {
     flex-direction: column;
     align-items: flex-start;
@@ -298,7 +309,8 @@ body {
 /* ===== Footer ===== */
 /* -- Bloque principal del footer */
 .footer {
-  margin-top: 50px;
+  /* Anclar el footer al fondo del viewport cuando el contenido es corto */
+  margin-top: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -662,20 +674,24 @@ body {
 
   /* Centrar el contenido del section y armonizar padding */
   .page {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    /* Alinear el inicio del bloque con la navbar (1.5rem de .container/.navbar) */
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .project-container {
     width: 100%;
     box-sizing: border-box;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 0;
+    margin-right: 0;
   }
 
-  /* Mejorar legibilidad del contenido */
+  /* Mejorar legibilidad del contenido y alinear con navbar */
   .project-container {
-    padding: 0.9rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    padding-right: 0.9rem;
+    padding-left: 0; /* texto y borde del bloque alineados con el padding del navbar */
     border-radius: 12px;
   }
 
@@ -908,11 +924,10 @@ body {
   background: rgba(100, 108, 255, 0.06);
   padding: 1rem;
   border-radius: 12px;
-  /* Mantener el bloque centrado y con ancho razonable */
-  max-width: 980px;
+  /* Bloque ocupa el ancho del contenedor para alinear inicio y final con navbar */
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0;
+  margin-right: 0;
 }
 .project-container h2 {
   margin-bottom: 1rem;

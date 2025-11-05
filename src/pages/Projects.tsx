@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function Projects() {
   const projects = [
     {
@@ -8,7 +10,7 @@ export default function Projects() {
       demo: '',
       tags: ['Java 8', 'Play Framework', 'jQuery' , 'MetroUI','MySql','html5','css3','javascript'],
       status: ['info'],
-      info: '/Evaluacion',
+      info: '/evaluacion',
     },
     {
       name: 'Portfolio Web',
@@ -79,7 +81,7 @@ export default function Projects() {
                 <a className="btn" href={p.demo} target="_blank" rel="noopener noreferrer">Demo</a>
               )}
               {p.info && (
-                <a className="btn" href={p.info} target="_blank" rel="noopener noreferrer">Info</a>
+                <Link className="btn" to={p.info}>Info</Link>
               )}
             </div>
           </article>

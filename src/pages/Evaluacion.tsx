@@ -1,7 +1,14 @@
+import { Link } from 'react-router-dom'
+
 export default function Evaluacion() {
   return (
     <section className="page projects">
       <div className="project-container">
+        <div className="actions" style={{marginBottom:'0.75rem'}}>
+          <Link className="btn" to="/proyectos">
+            <span className="label">Volver a Proyectos</span>
+          </Link>
+        </div>
         <h2>Evaluación de Satisfacción a Empresas</h2>
 
         <p>
