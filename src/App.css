@@ -65,8 +65,8 @@ body {
 }
 
 .page {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .accent-cyan {
@@ -646,6 +646,56 @@ body {
   margin-top: 1rem;
 }
 
+/* Vista Evaluación: hacer la sección a ancho completo como la navbar */
+.page.projects {
+  /* Evitar que el título y la grilla se posicionen en fila */
+  display: block;
+}
+
+/* ===== Mobile tweaks (<=640px) ===== */
+@media (max-width: 640px) {
+  /* Evitar desbordes en móvil; usar ancho natural del contenido */
+  .page.projects {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Centrar el contenido del section y armonizar padding */
+  .page {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .project-container {
+    width: 100%;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Mejorar legibilidad del contenido */
+  .project-container {
+    padding: 0.9rem;
+    border-radius: 12px;
+  }
+
+  .project-container h2 {
+    font-size: 1.35rem;
+    line-height: 1.45rem;
+  }
+
+  .project-container p {
+    font-size: 0.98rem;
+    line-height: 1.60rem;
+  }
+
+  /* Imágenes a ancho completo en móvil */
+  .img-container img {
+    width: 100%;
+    padding-right: 0;
+  }
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -858,6 +908,11 @@ body {
   background: rgba(100, 108, 255, 0.06);
   padding: 1rem;
   border-radius: 12px;
+  /* Mantener el bloque centrado y con ancho razonable */
+  max-width: 980px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 .project-container h2 {
   margin-bottom: 1rem;
@@ -871,13 +926,14 @@ body {
   padding: 0;
   border-radius: 12px;
   display: block;
+  clear: both; /* asegura que texto y títulos no fluyan al costado de las imágenes */
 }
 
 /* Ajuste de imágenes dentro del contenedor */
 .img-container img {
-  margin: auto;
-  width: 90%;
+  width: 100%;
   height: auto;
   display: block;
-  padding-right: 20px;
+  margin: 0;
+  padding: 0;
 }
