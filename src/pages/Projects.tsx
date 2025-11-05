@@ -13,6 +13,16 @@ export default function Projects() {
       info: '/evaluacion',
     },
     {
+      name: 'Convocatorias para empleados',
+      description: 'Modulo en pagina https://proyecta.utch.edu.mx/ que el personal de recursos humanos de la Universidad Tecnológica de Chihuahua pueda lanzar convocatorias a empleados delas prestaciones socioeconomicas.',
+      image: '/images/projects/Convocatorias.jpg',
+      repo: '',
+      demo: '',
+      tags: ['Java 8', 'Play Framework', 'jQuery' , 'MetroUI','MySql','html5','css3','javascript'],
+      status: ['info'],
+      info: '/convocatorias',
+    },
+    {
       name: 'Portfolio Web',
       description: 'Sitio personal con React + Vite y diseño moderno.',
       image: '/images/projects/portafolio.jpg',

@@ -63,7 +63,7 @@ body {
 
 .container {
   max-width: 1024px;
-  width: 100%;
+  width: 90%;
   margin: 0 auto;
   padding: var(--container-padding-x);
   text-align: left;
@@ -99,6 +99,8 @@ body {
   position: sticky;
   top: 0;
   backdrop-filter: blur(8px);
+  /* Asegurar que el menú móvil se muestre por encima del contenido */
+  z-index: 1000;
 }
 
 /* -- Brand */
@@ -147,7 +149,8 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-    z-index: 10;
+    /* Elevar el dropdown por encima de cualquier contenido de la página */
+    z-index: 1100;
     backdrop-filter: blur(6px);
   }
 
