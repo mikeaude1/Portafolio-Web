@@ -853,3 +853,31 @@ body {
 .tech-section .tech-track {
   animation: tech-marquee var(--marquee-duration, 30s) linear infinite;
 }
+.project-container {
+  margin-top: 1rem;
+  background: rgba(100, 108, 255, 0.06);
+  padding: 1rem;
+  border-radius: 12px;
+}
+.project-container h2 {
+  margin-bottom: 1rem;
+}
+.project-container p {
+  margin-bottom: 1rem;
+}
+.img-container {
+  width: 100%;
+  margin: 10px;
+  padding: 0;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Ajuste de imágenes dentro del contenedor */
+.img-container img {
+  margin: auto;
+  width: 90%;
+  height: auto;
+  display: block;
+  padding-right: 20px;
+}

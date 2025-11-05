@@ -1,6 +1,16 @@
 export default function Projects() {
   const projects = [
     {
+      name: 'Encuesta a Empresas',
+      description: 'Modulo en pagina https://proyecta.utch.edu.mx/ para evaluar a la satisfacción de las empresas a cerca de las practicas profecionales de los alumnos.',
+      image: '/images/projects/EvaluacionEmpresa.jpg',
+      repo: '',
+      demo: '',
+      tags: ['Java 8', 'Play Framework', 'jQuery' , 'MetroUI','MySql','html5','css3','javascript'],
+      status: ['info'],
+      info: '/Evaluacion',
+    },
+    {
       name: 'Portfolio Web',
       description: 'Sitio personal con React + Vite y diseño moderno.',
       image: '/images/projects/portafolio.jpg',
@@ -8,6 +18,7 @@ export default function Projects() {
       demo: 'https://www.audedev.com/',
       tags: ['React', 'Vite', 'CSS'],
       status: ['online','repo'],
+      info: '',
     },
     {
       name: 'API de Cursos',
@@ -17,6 +28,7 @@ export default function Projects() {
       demo: '',
       tags: ['Node.js', 'Express', 'MongoDB'],
       status: ['repo','online'],
+      info: '',
     },
     {
       name: 'Molinar-slayer',
@@ -26,6 +38,7 @@ export default function Projects() {
       demo: 'https://molinarlayer.audedev.com/',
       tags: ['javascript', 'css', 'python', 'django', 'html5','React', 'Vite', 'CSS'],
       status: ['repo','online'],
+      info: '',
     },
   ] as const;
 
@@ -64,6 +77,9 @@ export default function Projects() {
               )}
               {p.demo && (
                 <a className="btn" href={p.demo} target="_blank" rel="noopener noreferrer">Demo</a>
+              )}
+              {p.info && (
+                <a className="btn" href={p.info} target="_blank" rel="noopener noreferrer">Info</a>
               )}
             </div>
           </article>
