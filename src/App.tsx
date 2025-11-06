@@ -7,6 +7,7 @@ import Diplomas from './pages/Diplomas'
 import Projects from './pages/Projects'
 import Contact from './pages/Contact'
 import Evaluacion from './pages/Evaluacion'
+import Prestaciones from './pages/Prestaciones'
 
 import Footer from './components/Footer'
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/proyectos" element={<Projects />} />
           <Route path="/contacto" element={<Contact />} />
           <Route path="/evaluacion" element={<Evaluacion />} />
+          <Route path="/prestaciones" element={<Prestaciones />} />
         </Routes>
       </main>
       <Footer />

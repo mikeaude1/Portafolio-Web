@@ -4,7 +4,7 @@ export default function Projects() {
   const projects = [
     {
       name: 'Encuesta a Empresas',
-      description: 'Modulo en pagina https://proyecta.utch.edu.mx/ para evaluar a la satisfacción de las empresas a cerca de las practicas profecionales de los alumnos.',
+      description: 'Modulo en el portal de mi empleo actual. Para evaluar a la satisfacción de las empresas a cerca de las practicas profecionales de los alumnos. Por motivos de seguridad no puedo compartir el link del modulo.',
       image: '/images/projects/EvaluacionEmpresa.jpg',
       repo: '',
       demo: '',
@@ -14,13 +14,13 @@ export default function Projects() {
     },
     {
       name: 'Convocatorias para empleados',
-      description: 'Modulo en pagina https://proyecta.utch.edu.mx/ que el personal de recursos humanos de la Universidad Tecnológica de Chihuahua pueda lanzar convocatorias a empleados delas prestaciones socioeconomicas.',
+      description: 'Modulo en el portal de mi empleo actual. En él, el personal de recursos humanos puede lanzar convocatorias a empleados de las prestaciones socioeconomicas. Por motivos de seguridad no puedo compartir el link del modulo.',
       image: '/images/projects/Convocatorias.jpg',
       repo: '',
       demo: '',
       tags: ['Java 8', 'Play Framework', 'jQuery' , 'MetroUI','MySql','html5','css3','javascript'],
       status: ['info'],
-      info: '/convocatorias',
+      info: '/prestaciones',
     },
     {
       name: 'Portfolio Web',

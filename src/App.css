@@ -932,7 +932,7 @@ body {
   margin-left: 0;
   margin-right: 0;
 }
-.project-container h2 {
+.project-container .project-title {
   margin-bottom: 1rem;
 }
 .project-container p {
@@ -940,7 +940,7 @@ body {
 }
 .img-container {
   width: 100%;
-  margin: 10px;
+  margin: 10px auto;
   padding: 0;
   border-radius: 12px;
   display: block;
@@ -954,4 +954,8 @@ body {
   display: block;
   margin: 0;
   padding: 0;
+}
+.project-title {
+  text-align: center;
+  font-size: 1.5rem;
 }
