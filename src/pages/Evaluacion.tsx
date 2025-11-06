@@ -13,24 +13,24 @@ export default function Evaluacion() {
         <h2 className="project-title">Evaluación de Satisfacción a Empresas</h2>
 
         <p>
-          Este proyecto fue desarrollado para crear un <strong>módulo de evaluación de satisfacción</strong> que permite a la universidad obtener retroalimentación de las empresas que
-          reciben estudiantes para realizar sus <strong>Prácticas Profesionales</strong>. El objetivo fue diseñar una plataforma dinámica y fácil de usar que facilitara la recopilación,
+          Este proyecto fue desarrollado para crear un <strong style={{ color: '#34ccf1ff' }}>módulo de evaluación de satisfacción</strong> que permite a la universidad obtener retroalimentación de las empresas que
+          reciben estudiantes para realizar sus <strong style={{ color: '#34ccf1ff' }}>Prácticas Profesionales</strong>. El objetivo fue diseñar una plataforma dinámica y fácil de usar que facilitara la recopilación,
           análisis y visualización de datos sobre el desempeño de los alumnos y la satisfacción general de las empresas.
         </p>
 
         <p>
-          El desarrollo de este módulo me permitió aplicar mis conocimientos de <strong>Java (Play Framework), MySQL, jQuery, HTML, CSS y JavaScript</strong>, siguiendo el patrón
-          <strong> MVC </strong> y principios de <strong>Programación Orientada a Objetos</strong> para garantizar una arquitectura limpia, mantenible y escalable.
+          El desarrollo de este módulo me permitió aplicar mis conocimientos de <strong style={{ color: '#34ccf1ff' }}>Java (Play Framework), MySQL, jQuery, HTML, CSS y JavaScript</strong>, siguiendo el patrón
+          <strong style={{ color: '#34ccf1ff' }}> MVC </strong> y principios de <strong style={{ color: '#34ccf1ff' }}>Programación Orientada a Objetos</strong> para garantizar una arquitectura limpia, mantenible y escalable. 
         </p>
 
         <p>
           La solución se divide en dos secciones principales: una para el área administrativa y otra para las empresas que participan en el programa de prácticas profesionales.
         </p>
 
-        <p>La primera parte corresponde a la <strong>sección del administrador</strong>, donde se crean los formularios de evaluación.</p>
+        <p>La primera parte corresponde a la <strong style={{ color: '#34ccf1ff' }}>sección del administrador</strong>, donde se crean los formularios de evaluación.</p>
 
         <p>
-          Estos formularios constan de dos tipos de preguntas: <strong>abiertas</strong> y <strong>calificables</strong>. Las preguntas abiertas permiten a las empresas expresar sus
+          Estos formularios constan de dos tipos de preguntas: <strong style={{ color: '#34ccf1ff' }}>abiertas</strong> y <strong style={{ color: '#34ccf1ff' }}>calificables</strong>. Las preguntas abiertas permiten a las empresas expresar sus
           opiniones libremente, mientras que las calificables ayudan a medir la satisfacción numéricamente para facilitar el análisis y la comparación de resultados.
         </p>
 
@@ -52,17 +52,17 @@ export default function Evaluacion() {
         </div>
 
         <p>
-          Una vez recopiladas las respuestas, se procesan mediante un módulo de <strong>análisis de datos</strong> que identifica patrones, tendencias y áreas de mejora en la
+          Una vez recopiladas las respuestas, se procesan mediante un módulo de <strong style={{ color: '#34ccf1ff' }}>análisis de datos</strong> que identifica patrones, tendencias y áreas de mejora en la
           satisfacción de las empresas.
         </p>
 
         <p>
-          Los resultados se presentan mediante <strong>tablas y gráficos interactivos</strong>, y se pueden consultar por periodos escolares específicos, lo que facilita el seguimiento
+          Los resultados se presentan mediante <strong style={{ color: '#34ccf1ff' }}>tablas y gráficos interactivos</strong>, y se pueden consultar por periodos escolares específicos, lo que facilita el seguimiento
           histórico de los niveles de satisfacción.
         </p>
 
         <p>
-          Además, el usuario puede <strong>exportar los resultados a Excel</strong> para realizar análisis adicionales o compartirlos con otras áreas.
+          Además, el usuario puede <strong style={{ color: '#34ccf1ff' }}>exportar los resultados a Excel</strong> para realizar análisis adicionales o compartirlos con otras áreas.
         </p>
 
         <strong>Puedes ver un ejemplo de cómo se ve la tabla de resultados a continuación:</strong>
@@ -77,12 +77,12 @@ export default function Evaluacion() {
         </div>
 
         <p>
-          La segunda parte corresponde a la <strong>sección de la empresa</strong>, donde se muestran las encuestas pendientes de contestar. Las empresas pueden iniciar sesión,
+          La segunda parte corresponde a la <strong style={{ color: '#34ccf1ff' }}>sección de la empresa</strong>, donde se muestran las encuestas pendientes de contestar. Las empresas pueden iniciar sesión,
           consultar sus encuestas disponibles y responder de manera intuitiva.
         </p>
 
         <p>
-          Al acceder, las empresas verán un listado de encuestas pendientes asociadas a sus vacantes expiradas. Un <strong>popup</strong> les notifica las vacantes pendientes de cierre,
+          Al acceder, las empresas verán un listado de encuestas pendientes asociadas a sus vacantes expiradas. Un <strong style={{ color: '#34ccf1ff' }}>popup</strong> les notifica las vacantes pendientes de cierre,
           y antes de finalizar el proceso, se les solicita completar la encuesta correspondiente.
         </p>
 
@@ -104,7 +104,7 @@ export default function Evaluacion() {
         <div className="conclucion">
           <h3>Conclusión y Resultados</h3>
           <p>
-            El módulo de <strong>Evaluación de Satisfacción a Empresas</strong> fortaleció significativamente la comunicación entre la universidad y las empresas, además de mejorar la
+            El módulo de <strong style={{ color: '#34ccf1ff' }}>Evaluación de Satisfacción a Empresas</strong> fortaleció significativamente la comunicación entre la universidad y las empresas, además de mejorar la
             calidad de los datos recolectados y optimizar la toma de decisiones institucionales.
           </p>
 
@@ -115,13 +115,13 @@ export default function Evaluacion() {
             <li>Facilitó la generación de reportes estadísticos y el seguimiento de la satisfacción empresarial por periodos.</li>
           </ul>
 
-          <p><strong>Tecnologías y modelo aplicados:</strong></p>
+          <p><strong style={{ color: '#34ccf1ff' }}>Tecnologías y modelo aplicados:</strong></p>
           <ul>
-            <li><strong>Java 8 + Play Framework</strong>: arquitectura <strong>MVC</strong> con controladores, modelos y vistas independientes.</li>
-            <li><strong>JavaScript + jQuery</strong>: manejo dinámico de formularios, eventos y peticiones asíncronas.</li>
-            <li><strong>MySQL</strong>: consultas optimizadas, relaciones bien estructuradas e índices para alto rendimiento.</li>
-            <li><strong>CSS con Metro UI v2</strong>: interfaz consistente, responsiva y accesible.</li>
-            <li><strong>POO</strong>: encapsulación de entidades (empresas, encuestas, respuestas) y lógica reutilizable.</li>
+            <li><strong style={{ color: '#34ccf1ff' }}>Java 8 + Play Framework</strong>: arquitectura <strong style={{ color: '#34ccf1ff' }}>MVC</strong> con controladores, modelos y vistas independientes.</li>
+            <li><strong style={{ color: '#34ccf1ff' }}>JavaScript + jQuery</strong>: manejo dinámico de formularios, eventos y peticiones asíncronas.</li>
+            <li><strong style={{ color: '#34ccf1ff' }}>MySQL</strong>: consultas optimizadas, relaciones bien estructuradas e índices para alto rendimiento.</li>
+            <li><strong style={{ color: '#34ccf1ff' }}>CSS con Metro UI v2</strong>: interfaz consistente, responsiva y accesible.</li>
+            <li><strong style={{ color: '#34ccf1ff' }}>POO</strong>: encapsulación de entidades (empresas, encuestas, respuestas) y lógica reutilizable.</li> 
           </ul>
 
           <p>

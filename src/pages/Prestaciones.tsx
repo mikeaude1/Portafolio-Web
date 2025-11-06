@@ -41,7 +41,7 @@ export default function Prestaciones() {
                         <li>Empleados. Esta sección permite a los empleados ver las convocatorias disponibles y postularse a ellas subiendo los documentos necesarios, ver el historial de convocatorias postuladas y su estado.</li>
                     </ul>
                 </p>
-                <strong style={{ color: '#007bff' }}>Podras ver en las siguientes imagenes como se ve el proyecto del lado de Recursos Humanos:</strong>
+                <strong style={{ color: '#34ccf1ff' }}>Podras ver en las siguientes imagenes como se ve el proyecto del lado de Recursos Humanos:</strong>
                 <div className="project-images">
                     <p>Panel de Convocatorias:</p>
                     <p>En este panel se puede acceder directamente al modulo de convocatorias, donde se pueden crear, activar, modificar y terminar convocatorias.</p>
@@ -76,7 +76,7 @@ export default function Prestaciones() {
                     <div className="img-container">
                         <img src="/images/projects/detalleconvocatoria.jpg" alt="DetalleConvocatoria" />
                     </div>
-                    <strong style={{ color: '#007bff' }}>A partir de aqui, podras ver en las siguientes imagenes como se ve el proyecto del lado de Empleados:</strong>
+                    <strong style={{ color: '#34ccf1ff' }}>A partir de aqui, podras ver en las siguientes imagenes como se ve el proyecto del lado de Empleados:</strong>
                     <p>Panel de Convocatorias:</p>
                     <p>El empleado en su menu principal cuenta con un apartado de Prestaciones Socioeconomicas, donde puede ver las convocatorias disponibles y postularse a ellas. Ademas cuando una convocatoria se encuentra activa se les notifica via correo electronico y notificacion dentro del portal.</p>
                     <p>Al acceder a este modulo, se puede ver un carrucel donde todas las convocatorias disponibles estaran apareciendo de manera dinamica y con su informacion.</p>
@@ -98,9 +98,9 @@ export default function Prestaciones() {
                     </div>
 
                     <section className="project-conclusion">
-                        <h2 className="project-title" style={{ color: '#25ecf3ff' }}>Conclusión del Proyecto</h2>
+                        <h2 className="project-title" style={{ color: '#34ccf1ff' }}>Conclusión del Proyecto</h2>
                         <p>
-                            El proyecto <strong>Prestaciones Socioeconómicas</strong> es una solución full-stack diseñada para digitalizar y optimizar
+                            El proyecto <strong style={{ color: '#34ccf1ff' }}>Prestaciones Socioeconómicas</strong> es una solución full-stack diseñada para digitalizar y optimizar
                             el proceso de convocatorias y postulaciones para empleados. La plataforma incrementó la eficiencia y la transparencia en
                             la gestión de prestaciones, facilitando la comunicación entre Recursos Humanos y el personal, y reduciendo el tiempo de
                             administración de cada convocatoria.
@@ -113,10 +113,10 @@ export default function Prestaciones() {
                         </p>
 
                         <ul >
-                            <li><strong>Impacto:</strong> Mejoras en la trazabilidad y transparencia del proceso de postulaciones.</li>
-                            <li><strong>Alcance:</strong> Módulos independientes para Recursos Humanos y Empleados con control de roles y permisos.</li>
-                            <li><strong>Tecnologías:</strong> Java 8, Play Framework, jQuery, MetroUI, MySQL, HTML5, CSS3 y JavaScript.</li>
-                            <li><strong>Responsabilidad:</strong> Desarrollo full-stack, pruebas, corrección de errores y deployment.</li>
+                            <li><strong style={{ color: '#34ccf1ff' }}>Impacto:</strong> Mejoras en la trazabilidad y transparencia del proceso de postulaciones.</li>
+                            <li><strong style={{ color: '#34ccf1ff' }}>Alcance:</strong> Módulos independientes para Recursos Humanos y Empleados con control de roles y permisos.</li>
+                            <li><strong style={{ color: '#34ccf1ff' }}>Tecnologías:</strong> Java 8, Play Framework, jQuery, MetroUI, MySQL, HTML5, CSS3 y JavaScript.</li>
+                            <li><strong style={{ color: '#34ccf1ff' }}>Responsabilidad:</strong> Desarrollo full-stack, pruebas, corrección de errores y deployment.</li>   
                         </ul>
 
                         <p>
